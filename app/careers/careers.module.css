@@ -1,0 +1,81 @@
+.main {
+  background-color: var(--color-bg-cream);
+}
+
+.hero {
+  margin-top: 130px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #fff;
+  border-radius: 15px;
+  height: 60vh;
+  display: grid;
+  place-items: center;
+  padding: 4rem 0;
+}
+
+.hero h1 {
+  font-family: var(--font-heading);
+  position: relative;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.kicker {
+  position: absolute;
+  font-size: 1.2rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  top: -2.5rem;
+  left: 0;
+}
+
+.opportunities {
+  padding: 3rem 0 1rem;
+}
+
+.quote {
+  display: block;
+  padding: 2rem;
+  margin-top: 2rem;
+  background-color: #fff;
+}
+
+.why {
+  padding: 4rem 0;
+}
+
+.why > div {
+  display: grid;
+  grid-template-columns: 0.55fr 0.45fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.why img {
+  object-fit: cover;
+  width: 100%;
+  border-radius: 12px;
+}
+
+@media only screen and (max-width: 800px) {
+  .hero {
+    height: 100%;
+  }
+
+  .hero h1,
+  .hero p {
+    width: 100%;
+  }
+
+  .why > div {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

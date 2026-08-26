@@ -1,0 +1,152 @@
+.section {
+  background-color: #fff;
+  padding: 4rem 0;
+}
+
+.intro {
+  margin-bottom: 0;
+}
+
+.grid {
+  display: grid;
+  gap: 4rem;
+  margin-top: 2rem;
+}
+
+.sideBySide {
+  grid-template-columns: 0.2fr 0.8fr;
+}
+
+.stacked {
+  grid-template-columns: 1fr;
+}
+
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-bottom: 2px solid;
+  border-image-source: var(--gradient-primary);
+  border-image-slice: 1;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.contactDetails span {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-weight: 500;
+}
+
+.contactDetails img {
+  width: 15px;
+  height: 15px;
+}
+
+.social {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.social img {
+  width: 34px;
+  height: 34px;
+}
+
+.forms {
+  display: grid;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.fieldRow > div {
+  width: 100%;
+  flex: 1 1 200px;
+}
+
+.forms input,
+.forms textarea {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  border-bottom: 2px solid;
+  border-image-source: var(--gradient-primary);
+  border-image-slice: 1;
+  padding-bottom: 0.5rem;
+  font-family: var(--font-body);
+}
+
+.textArea {
+  display: block;
+}
+
+.textArea textarea {
+  border: 2px solid;
+  border-image-source: var(--gradient-primary);
+  border-image-slice: 1;
+  padding: 0.5rem;
+  width: 100%;
+  resize: vertical;
+}
+
+.forms label:not(.srOnly) {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.forms input[type="file"] {
+  border: none;
+}
+
+.forms input[type="file"]::file-selector-button {
+  all: unset;
+  padding: 0 2em;
+  height: 45px;
+  font-weight: 600;
+  margin-right: 2rem;
+  cursor: pointer;
+  transition: all 0.1s linear;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-primary);
+  color: #fff;
+}
+
+.forms input[type="file"]::file-selector-button:hover {
+  background: var(--gradient-primary-hover);
+}
+
+.errorText {
+  font-size: 0.8rem;
+  color: #c0392b;
+  margin-top: 0.4rem;
+}
+
+.successBox {
+  padding: 1rem;
+  border-bottom: 2px solid;
+  border-image-source: var(--gradient-primary);
+  border-image-slice: 1;
+  display: flex;
+  align-items: center;
+}
+
+@media only screen and (max-width: 950px) {
+  .fieldRow {
+    flex-wrap: wrap;
+  }
+
+  .sideBySide {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,27 @@
+.card {
+  border-radius: 8px;
+  border: 1px solid #d1d1d1;
+  background-color: #fff;
+  overflow: hidden;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.imageWrap {
+  position: relative;
+  height: 280px;
+  padding: 1.5rem;
+  background: #fff;
+}
+
+.card h3 {
+  text-align: center;
+  margin: 0;
+  padding: 1rem 1rem 1.25rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}

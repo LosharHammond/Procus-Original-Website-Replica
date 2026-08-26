@@ -1,0 +1,70 @@
+.footer {
+  background: linear-gradient(101.68deg, #008c46 23.11%, #98cb4f 108.47%);
+  color: #fff;
+  padding: 3rem 0 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 3rem 2rem;
+}
+
+.grid h3 {
+  margin-bottom: 0.8rem;
+  font-family: var(--font-heading);
+}
+
+.grid ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  list-style: none;
+}
+
+.grid a:hover {
+  text-decoration: underline;
+}
+
+.row {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logos {
+  flex-direction: row;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.logos img {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1);
+}
+
+.fdaBadge {
+  margin-top: 1.5rem;
+}
+
+.fdaBadge img {
+  height: 48px;
+  width: auto;
+}
+
+.bottomRule {
+  margin: 2rem 0;
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.copyright {
+  font-size: 0.85rem;
+  text-align: center;
+  opacity: 0.9;
+}

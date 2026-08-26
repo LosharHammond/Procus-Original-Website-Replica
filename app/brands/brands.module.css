@@ -1,0 +1,149 @@
+.heading {
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.heading p {
+  max-width: 46rem;
+  margin: 0.5rem auto 0;
+}
+
+/* Brand cover cards on the /brands index */
+.brandList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem 0 4rem;
+}
+
+.brandCard {
+  box-shadow: 0 3px 33px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+}
+
+.cover {
+  width: 100%;
+  object-fit: cover;
+  height: 340px;
+  border-radius: 10px 10px 0 0;
+}
+
+.brandCardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+}
+
+.mark {
+  height: 44px;
+  width: auto;
+}
+
+.readMore {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-primary-start);
+  font-weight: 500;
+}
+
+/* Full-bleed cover banner shared by the brand listing and product detail pages */
+.coverHeader {
+  position: relative;
+  margin-top: 130px;
+}
+
+.coverHeader img {
+  width: 100%;
+  height: 40vh;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+/* Per-brand product listing */
+.productContainer {
+  margin-bottom: 5rem;
+}
+
+.productContainer h2 {
+  margin: 4rem 0 2rem;
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Product detail page */
+.productDetails {
+  display: flex;
+  gap: 8rem;
+  padding: 4rem 0;
+  justify-content: center;
+}
+
+.productImage {
+  background-color: #fff;
+  border-radius: 25px;
+  height: 500px;
+  width: 500px;
+  max-width: 100%;
+  object-fit: cover;
+  border: 1px solid #d1d1d1;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.productNameLabel {
+  display: block;
+  margin: 2rem 0 0.5rem;
+  font-weight: 500;
+}
+
+.productInfo h2 {
+  font-weight: 700;
+}
+
+.productInfo p {
+  padding-top: 1rem;
+}
+
+.specList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 1rem 0;
+  list-style: none;
+}
+
+.specList li {
+  display: grid;
+  grid-template-columns: auto 300px;
+  gap: 2rem;
+}
+
+.specList li > span {
+  font-weight: 500;
+}
+
+@media only screen and (max-width: 1200px) {
+  .productDetails {
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: left;
+  }
+
+  .specList li {
+    grid-template-columns: auto auto;
+  }
+}

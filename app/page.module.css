@@ -1,0 +1,113 @@
+.main {
+  background-color: var(--color-bg-cream);
+}
+
+.alook {
+  background-color: var(--color-bg-grey);
+  padding: 4rem 0;
+}
+
+.alookRow {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.alook p {
+  margin-bottom: 1rem;
+}
+
+.alook img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.brands {
+  display: grid;
+  padding: 4rem 0;
+  grid-template-columns: 0.7fr 0.3fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.brandLogos {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.brandLogos img {
+  width: 130px;
+  height: auto;
+}
+
+.featured {
+  padding: 3rem 0;
+}
+
+.lives {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding: 4rem 0 2rem;
+}
+
+.lives p:nth-child(2) {
+  margin-top: 1rem;
+  max-width: 45rem;
+}
+
+.ambassadors {
+  padding: 2rem 0 4rem;
+}
+
+.packaging {
+  padding: 12rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.packagingText p {
+  width: 50%;
+  margin-bottom: 1.5rem;
+}
+
+.packagingImage {
+  position: absolute;
+  top: -20vh;
+  right: -100px;
+  width: 600px;
+  max-width: none;
+  height: auto;
+}
+
+.happyCustomers {
+  padding: 2rem 0 1rem;
+}
+
+@media only screen and (max-width: 1200px) {
+  .brands {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .alookRow {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .packaging {
+    padding: 4rem 0;
+  }
+
+  .packagingText p {
+    width: 100%;
+  }
+
+  .packagingImage {
+    display: none;
+  }
+}

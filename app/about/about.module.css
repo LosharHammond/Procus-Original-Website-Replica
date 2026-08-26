@@ -1,0 +1,92 @@
+.main {
+  background-color: var(--color-bg-cream);
+}
+
+.company {
+  padding: 4rem 0;
+}
+
+.company > div {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.company p:not(:first-child) {
+  margin-bottom: 1rem;
+}
+
+.company img {
+  object-fit: cover;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.purpose {
+  padding: 2rem 0 4rem;
+}
+
+.purpose > div {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.purpose img {
+  object-fit: cover;
+  width: 100%;
+  border-radius: 12px;
+  order: -1;
+}
+
+.values {
+  padding: 2rem 0 4rem;
+}
+
+.valuesList {
+  margin: 0;
+  padding-left: 25px;
+}
+
+.culture {
+  padding: 2rem 0 5rem;
+}
+
+.cultureDiv {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.cultureDiv span {
+  font-size: 1.4rem;
+  font-weight: 300;
+  word-spacing: 0.15em;
+  flex: 1 1 260px;
+}
+
+.cultureDiv p {
+  flex: 2 1 400px;
+}
+
+.culture img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+@media only screen and (max-width: 800px) {
+  .company > div,
+  .purpose > div {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .purpose img {
+    order: 0;
+  }
+}

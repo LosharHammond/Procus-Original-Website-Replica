@@ -1,0 +1,33 @@
+.heading {
+  padding: 5px 0 1rem;
+  display: grid;
+}
+
+.heading h2 {
+  display: inline-flex;
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+.eyebrow {
+  display: inline-flex;
+  flex-wrap: wrap;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.eyebrow span {
+  margin-right: 0.5rem;
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  top: -2px;
+  left: -12px;
+}
+
+.center {
+  justify-content: center;
+  text-align: center;
+}

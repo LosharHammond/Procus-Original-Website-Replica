@@ -1,0 +1,23 @@
+.sectionPad {
+  background-color: var(--color-bg-grey);
+  padding-block: 3em;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-block: 1em;
+}
+
+.quote {
+  display: block;
+  padding: 2rem;
+  margin-top: 2rem;
+  background-color: #fff;
+}
