@@ -88,7 +88,7 @@ export default function ContactForm({
     formData.set("subject", subject);
 
     try {
-      const response = await fetch("/", {
+      const response = await fetch("/__forms.html", {
         method: "POST",
         body: formData,
       });
@@ -143,8 +143,6 @@ export default function ContactForm({
             name={formName}
             method="POST"
             encType="multipart/form-data"
-            data-netlify="true"
-            data-netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             noValidate
           >

@@ -82,7 +82,7 @@ Drop the new file into the matching folder under `public/assets/` (see structure
 
 ### Connecting the contact / resume forms
 
-The contact and careers forms are connected to Netlify Forms. They validate in the browser, submit without leaving the page, include spam protection, and support PDF résumé uploads up to 500KB.
+The contact and careers forms are connected to Netlify Forms. They validate in the browser, submit without leaving the page, include spam protection, and support PDF résumé uploads up to 500KB. Netlify detects both form schemas from `public/__forms.html`, as required by the current Next.js runtime, while the visible forms submit to that static endpoint.
 
 After the first Netlify deployment, open **Project configuration → Notifications → Email and webhooks → Form submission notifications**, add an email notification, select the `contact` and `careers` forms, and set the recipient to `info@procusghana.com`. This recipient setting is intentionally kept in Netlify rather than exposed in the website source.
 
