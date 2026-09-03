@@ -15,7 +15,10 @@ export default function ProductCard({ brandSlug, product }: { brandSlug: string;
           style={{ objectFit: "contain" }}
         />
       </div>
-      <h3>{product.name}</h3>
+      <div className={styles.details}>
+        <h3>{product.name}</h3>
+        <p className={styles.sizes}>Available in {product.sizes}</p>
+      </div>
     </Link>
   );
 }

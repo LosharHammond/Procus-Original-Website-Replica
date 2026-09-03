@@ -61,6 +61,18 @@
   width: 100%;
 }
 
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .fieldRow {
   display: flex;
   gap: 2rem;
@@ -73,7 +85,7 @@
   flex: 1 1 200px;
 }
 
-.forms input,
+.forms input:not([type="hidden"]),
 .forms textarea {
   all: unset;
   box-sizing: border-box;
@@ -139,6 +151,22 @@
   border-image-slice: 1;
   display: flex;
   align-items: center;
+}
+
+.errorBox {
+  padding: 1rem;
+  color: #a31919;
+  border-bottom: 2px solid #a31919;
+}
+
+.errorBox a {
+  color: inherit;
+  font-weight: 700;
+}
+
+.forms button:disabled {
+  cursor: wait;
+  opacity: 0.7;
 }
 
 @media only screen and (max-width: 950px) {

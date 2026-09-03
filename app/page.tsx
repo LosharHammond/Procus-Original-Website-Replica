@@ -12,7 +12,6 @@ import styles from "./page.module.css";
 
 export default function Home() {
   const kivo = brands[0];
-  const mutlu = brands[1];
 
   return (
     <div className={styles.main}>
@@ -46,20 +45,16 @@ export default function Home() {
       <section className="container">
         <div className={styles.brands}>
           <div>
-            <Heading eyebrow="Our Brands" title="The brands that are trusted and loved" />
+            <Heading eyebrow="Our Brand" title="The brand that is trusted and loved" />
             <p>
-              We bring you diversified and delicious food so you can enjoy the best, while sitting in the comfort
-              of your home. We are the official manufacturers of Kivo Hot pepper, Kivo 4-in-1 Gari Soaking Mix,
-              Kivo Non-dairy Creamer, Kivo Ginger powder, Kivo Curry Powder. Additionally, we distribute Mutlu
-              Spaghetti and Kivo Baked Beans.
+              We bring you diversified and delicious food so you can enjoy the best from the comfort of your home.
+              Our Kivo range includes natural spice powders, gari soaking mixes, non-dairy creamer, baked beans and
+              convenient local foods made for households across Ghana.
             </p>
           </div>
           <div className={styles.brandLogos}>
             <Link href={`/brands/${kivo.slug}`}>
               <Image src={kivo.logo} alt="KIVO" width={130} height={80} />
-            </Link>
-            <Link href={`/brands/${mutlu.slug}`}>
-              <Image src={mutlu.logo} alt="Mutlu" width={130} height={80} />
             </Link>
           </div>
         </div>

@@ -68,6 +68,7 @@ export default function CareersPage() {
 
       <ContactForm
         id="resume-form"
+        formName="careers"
         title="Join the team"
         description="Interested to work with Procus? Please submit your profile by filling in the details given below"
         showContactDetails={false}

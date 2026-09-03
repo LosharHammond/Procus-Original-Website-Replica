@@ -16,6 +16,7 @@ export type FieldConfig = {
 
 type ContactFormProps = {
   id?: string;
+  formName?: "contact" | "careers";
   title: string;
   description: string;
   rows: FieldConfig[][];
@@ -29,6 +30,7 @@ const FILE_SIZE_LIMIT = 500 * 1024; // 500KB
 
 export default function ContactForm({
   id,
+  formName = "contact",
   title,
   description,
   rows,
@@ -37,13 +39,20 @@ export default function ContactForm({
   showContactDetails = true,
   submitLabel = "Submit",
 }: ContactFormProps) {
-  const [status, setStatus] = useState<"idle" | "success">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const allFields = [...rows.flat(), message];
+  const subject =
+    formName === "careers"
+      ? "New career application from the Procus website"
+      : "New enquiry from the Procus website";
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setStatus("idle");
     const form = event.currentTarget;
     const formData = new FormData(form);
     const nextErrors: Record<string, string> = {};
@@ -68,13 +77,30 @@ export default function ContactForm({
       }
     }
 
-    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      return;
+    }
 
-    if (Object.keys(nextErrors).length === 0) {
-      // Frontend-only for now: no data leaves the browser.
-      // Wire this up to your email/CRM endpoint when ready — see README.md.
+    setErrors({});
+    setStatus("submitting");
+    formData.set("form-name", formName);
+    formData.set("subject", subject);
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("The form submission was not accepted.");
+      }
+
       setStatus("success");
       form.reset();
+    } catch {
+      setStatus("error");
     }
   }
 
@@ -112,10 +138,34 @@ export default function ContactForm({
             </div>
           ) : null}
 
-          <form className={styles.forms} onSubmit={handleSubmit} noValidate>
+          <form
+            className={styles.forms}
+            name={formName}
+            method="POST"
+            encType="multipart/form-data"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
+            noValidate
+          >
+            <input type="hidden" name="form-name" value={formName} />
+            <input type="hidden" name="subject" value={subject} />
+            <p className={styles.honeypot} aria-hidden="true">
+              <label>
+                Do not fill this out if you are human:
+                <input name="bot-field" tabIndex={-1} autoComplete="off" />
+              </label>
+            </p>
             {status === "success" ? (
               <div className={styles.successBox} role="status">
-                Thanks — your message has been received. We&apos;ll be in touch soon.
+                Thanks — your message has been sent.
+              </div>
+            ) : null}
+
+            {status === "error" ? (
+              <div className={styles.errorBox} role="alert">
+                Sorry, your message could not be sent. Please email us directly at{" "}
+                <a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a>.
               </div>
             ) : null}
 
@@ -126,7 +176,14 @@ export default function ContactForm({
                     <label htmlFor={field.name} className="srOnly">
                       {field.label}
                     </label>
-                    <input id={field.name} name={field.name} type={field.type} placeholder={field.placeholder} />
+                    <input
+                      id={field.name}
+                      name={field.name}
+                      type={field.type}
+                      placeholder={field.placeholder}
+                      required={field.required}
+                      aria-invalid={Boolean(errors[field.name])}
+                    />
                     {errors[field.name] ? <p className={styles.errorText}>{errors[field.name]}</p> : null}
                   </div>
                 ))}
@@ -137,7 +194,14 @@ export default function ContactForm({
               <label htmlFor={message.name} className="srOnly">
                 {message.label}
               </label>
-              <textarea id={message.name} name={message.name} placeholder={message.placeholder} rows={5} />
+              <textarea
+                id={message.name}
+                name={message.name}
+                placeholder={message.placeholder}
+                rows={5}
+                required={message.required}
+                aria-invalid={Boolean(errors[message.name])}
+              />
               {errors[message.name] ? <p className={styles.errorText}>{errors[message.name]}</p> : null}
             </div>
 
@@ -151,7 +215,9 @@ export default function ContactForm({
               </div>
             ) : null}
 
-            <Button type="submit">{submitLabel}</Button>
+            <Button type="submit" disabled={status === "submitting"}>
+              {status === "submitting" ? "Sending..." : submitLabel}
+            </Button>
           </form>
         </div>
       </div>

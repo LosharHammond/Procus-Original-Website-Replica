@@ -82,11 +82,9 @@ Drop the new file into the matching folder under `public/assets/` (see structure
 
 ### Connecting the contact / resume forms
 
-Both forms (`components/ContactForm.tsx`) are **frontend-only right now** — they validate, then show a success message, but don't send data anywhere. To wire them up:
+The contact and careers forms are connected to Netlify Forms. They validate in the browser, submit without leaving the page, include spam protection, and support PDF résumé uploads up to 500KB.
 
-1. Add a server action or API route (e.g. `app/api/contact/route.ts`) that sends the form data wherever you want (email via Resend/SendGrid, a CRM webhook, etc).
-2. In `handleSubmit` inside `ContactForm.tsx`, replace the `// Frontend-only for now` block with a `fetch()`/server-action call to that endpoint.
-3. Keep any API keys in environment variables (`.env.local`, gitignored) — never commit secrets.
+After the first Netlify deployment, open **Project configuration → Notifications → Email and webhooks → Form submission notifications**, add an email notification, select the `contact` and `careers` forms, and set the recipient to `info@procusghana.com`. This recipient setting is intentionally kept in Netlify rather than exposed in the website source.
 
 ## Deployment
 
@@ -96,7 +94,7 @@ This is a standard Next.js app and deploys anywhere Next.js runs:
 - **Netlify** — use the official Next.js Runtime plugin.
 - **Node/VPS/cPanel (Node hosting)** — `npm run build`, then `npm start` behind a reverse proxy (or use `next start -p <port>`).
 
-There are no environment variables required for the current (frontend-only) build. If you wire up the contact form to a real backend, add its secrets as environment variables on your hosting platform and reference them via `process.env`.
+There are no environment variables or email passwords required for the current build.
 
 ## Design system notes
 

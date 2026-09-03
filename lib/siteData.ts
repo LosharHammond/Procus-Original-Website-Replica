@@ -92,6 +92,7 @@ export type Product = {
   slug: string;
   name: string;
   image: string;
+  images?: string[];
   imageAlt: string;
   description?: string;
   sizes: string;
@@ -121,12 +122,12 @@ export const brands: Brand[] = [
       "We are the official manufacturers of Kivo Hot pepper, Kivo 4-in-1 Gari Soaking Mix, Kivo Non-dairy Creamer, Kivo Ginger powder, Kivo Curry Powder. The new products on the market are Kivo 100% Natural Curry Plus, Kivo 100% Natural Ginger, Garlic and Onion Powder. Additionally, we distribute Kivo Baked Beans.",
     categories: [
       {
-        name: "Culinary",
+        name: "Spice Powders",
         products: [
           {
             slug: "kivo-100-natural-hot-pepper-powder",
             name: "KIVO 100% NATURAL HOT PEPPER POWDER",
-            image: "/assets/products/kivo/hot-pepper-powder.png",
+            image: "/assets/products/kivo/hot-pepper-powder-2026.png",
             imageAlt: "KIVO 100% NATURAL HOT PEPPER POWDER",
             description:
               "KIVO HOT PEPPER POWDER has the perfect combination of sizzling spiciness and natural red color to meet the needs of consumers who like it red and spicy hot. Hygienically packed in a variety of grammages to suit every purse, it is a 100% natural product, with a consistent quality that you can depend on day after day.",
@@ -144,25 +145,21 @@ export const brands: Brand[] = [
           {
             slug: "kivo-100-natural-curry-powder",
             name: "KIVO 100% NATURAL CURRY POWDER",
-            image: "/assets/products/kivo/curry-powder.png",
+            image: "/assets/products/kivo/curry-powder-2026.png",
             imageAlt: "KIVO 100% NATURAL CURRY POWDER",
             description:
               "KIVO CURRY POWDER is made from the choicest of spices and herbs sourced from across the orient and lends that extra color, flavor and aroma to your favorite Stew and Jollof.",
             sizes: "3.5g & 250g",
           },
           {
-            slug: "kivo-baked-beans",
-            name: "KIVO BAKED BEANS",
-            image: "/assets/products/kivo/baked-beans.png",
-            imageAlt: "KIVO BAKED BEANS",
-            description:
-              "KIVO BAKED BEANS is made from the choicest selection of North American White Navy beans and rich tomato sauce. It is a tasty and nutritious supplement for any meal of the day, be it breakfast, lunch or dinner. Use it along with your toast and eggs, toss it into your salad or add it to complement your noodles, spaghetti or rice dishes.",
-            sizes: "400g",
-          },
-          {
             slug: "kivo-100-natural-ginger-garlic-and-onion-powder",
             name: "KIVO 100% NATURAL GINGER, GARLIC AND ONION POWDER",
             image: "/assets/products/kivo/ginger-garlic-onion-powder.png",
+            images: [
+              "/assets/products/kivo/ginger-garlic-onion-powder.png",
+              "/assets/products/kivo/ginger-garlic-onion-powder-5g.jpg",
+              "/assets/products/kivo/ginger-garlic-onion-powder-50g.png",
+            ],
             imageAlt: "KIVO 100% NATURAL GINGER, GARLIC AND ONION POWDER",
             description:
               "KIVO 100% NATURAL GINGER, GARLIC, and ONION POWDER combines three essential spices in one convenient blend. It does not contain salt or MSG, is perfect for steaming fish, meat and chicken. It can also be used as a base for soups, stir-fries, and more. Each batch is carefully processed and packaged to maintain freshness and ensure you get the best quality seasoning for your dishes.",
@@ -172,6 +169,10 @@ export const brands: Brand[] = [
             slug: "kivo-100-natural-curry-plus",
             name: "KIVO 100% NATURAL CURRY PLUS",
             image: "/assets/products/kivo/curry-plus.png",
+            images: [
+              "/assets/products/kivo/curry-plus.png",
+              "/assets/products/kivo/curry-plus-5g.png",
+            ],
             imageAlt: "KIVO 100% NATURAL CURRY PLUS",
             description:
               "KIVO 100% NATURAL CURRY PLUS is a masterful blend of 16 spices plus Rosemary, carefully selected to add depth and warmth to your dishes. It is perfect for jollof rice, stews, fried rice, grilled meats, and roasted vegetables. No artificial preservatives or additives, just pure, natural flavor.",
@@ -186,28 +187,41 @@ export const brands: Brand[] = [
               "The KIVO 100% NATURAL ROSEMARY is harvested and processed with the highest hygiene standards. This aromatic herb is perfect for roasting meats, seasoning vegetables, and cooking your other meals. Experience the fresh, fragrant taste of our rosemary in your cooking.",
             sizes: "3.5g and 50g",
           },
+          {
+            slug: "kivo-100-natural-soup-spice-powder",
+            name: "KIVO 100% NATURAL SOUP SPICE POWDER",
+            image: "/assets/products/kivo/soup-spice-powder-5g.png",
+            imageAlt: "KIVO 100% NATURAL SOUP SPICE POWDER",
+            description:
+              "KIVO 100% NATURAL SOUP SPICE POWDER is a convenient seasoning blend made without preservatives, salt, artificial colour or MSG, created to add rich flavour and aroma to soups.",
+            sizes: "5g",
+          },
+          {
+            slug: "kivo-100-natural-stew-spice-powder",
+            name: "KIVO 100% NATURAL STEW SPICE POWDER",
+            image: "/assets/products/kivo/stew-spice-powder-5g.png",
+            imageAlt: "KIVO 100% NATURAL STEW SPICE POWDER",
+            description:
+              "KIVO 100% NATURAL STEW SPICE POWDER is a convenient seasoning blend made without preservatives, salt, artificial colour or MSG, created to bring depth and flavour to stews.",
+            sizes: "5g",
+          },
         ],
       },
       {
-        name: "Dairy",
+        name: "Gari Soaking Mixes",
         products: [
-          {
-            slug: "kivo-non-dairy-creamer",
-            name: "KIVO NON DAIRY CREAMER",
-            image: "/assets/products/kivo/non-dairy-creamer.png",
-            imageAlt: "KIVO NON DAIRY CREAMER",
-            description:
-              "KIVO NON-DAIRY CREAMER is your go to creamer to add milky creaminess and delicious taste to your Beverages, Cereals, Gari soakings and Porridge. It is available in affordable single serve sachets and larger pouch packing for your cakes, bakes and iced kenkeys.",
-            sizes: "20g & 250g",
-          },
           {
             slug: "kivo-4-in-1-gari-soaking-mix",
             name: "KIVO 4-IN-1 GARI SOAKING MIX",
-            image: "/assets/products/kivo/4-in-1-gari-soaking-mix.png",
+            image: "/assets/products/kivo/4-in-1-gari-soaking-mix-2026.png",
+            images: [
+              "/assets/products/kivo/4-in-1-gari-soaking-mix-2026.png",
+              "/assets/products/kivo/4-in-1-gari-soaking-mix-45g.png",
+            ],
             imageAlt: "KIVO 4-IN-1 GARI SOAKING MIX",
             description:
               "KIVO GARI SOAKING MIX has captured the hearts and minds of Ghanaians with a perfect blend of Crispy Gari, Creamy Creamer, Roasted groundnuts and Sugar. It is the ideal option for a quick snack or to satisfy your late-night hunger pangs.",
-            sizes: "50g & 125g",
+            sizes: "45g, 70g & 140g",
           },
           {
             slug: "kivo-4-in-1-gari-mix-low-sugar",
@@ -225,6 +239,97 @@ export const brands: Brand[] = [
             imageAlt: "KIVO 3 IN 1 GARI MIX ZERO NUT",
             description:
               "Enjoy the ultimate crunchiness of Gari with Kivo 3 in 1 Gari Mix Zero Nut. It is loaded with Gari and packed with flavor, but without any nuts. Perfect for those with dietary restrictions or preferences, this mix is a game-changer for Gari lovers. Savor the taste, minus the nuts!",
+            sizes: "125g",
+          },
+          {
+            slug: "kivo-4-in-1-coconut-gari-soaking-mix",
+            name: "KIVO 4 IN 1 COCONUT GARI SOAKING MIX",
+            image: "/assets/products/kivo/coconut-gari-soaking-mix.png",
+            imageAlt: "KIVO 4 IN 1 COCONUT GARI SOAKING MIX",
+            description:
+              "KIVO 4 IN 1 COCONUT GARI SOAKING MIX combines crispy gari, creamy creamer, toasted coconut and sugar in a convenient ready-to-enjoy mix fortified with Vitamin A, iron and zinc.",
+            sizes: "120g",
+          },
+          {
+            slug: "kivo-4-in-1-strawberry-gari-soaking-mix",
+            name: "KIVO 4 IN 1 STRAWBERRY GARI SOAKING MIX",
+            image: "/assets/products/kivo/strawberry-gari-soaking-mix.png",
+            images: [
+              "/assets/products/kivo/strawberry-gari-soaking-mix.png",
+              "/assets/products/kivo/strawberry-gari-soaking-mix-60g.png",
+            ],
+            imageAlt: "KIVO 4 IN 1 STRAWBERRY GARI SOAKING MIX",
+            description:
+              "KIVO 4 IN 1 STRAWBERRY GARI SOAKING MIX blends gari, creamer, strawberry and sugar for a fruity, creamy snack fortified with Vitamin A, iron and zinc.",
+            sizes: "60g",
+          },
+          {
+            slug: "kivo-4-in-1-tutti-frutti-gari-soaking-mix",
+            name: "KIVO 4 IN 1 TUTTI FRUTTI GARI SOAKING MIX",
+            image: "/assets/products/kivo/tutti-frutti-gari-soaking-mix.jpg",
+            imageAlt: "KIVO 4 IN 1 TUTTI FRUTTI GARI SOAKING MIX",
+            description:
+              "KIVO 4 IN 1 TUTTI FRUTTI GARI SOAKING MIX combines gari, creamer, tutti frutti pieces and sugar in a colourful ready-to-enjoy mix fortified with Vitamin A, iron and zinc.",
+            sizes: "120g sachet",
+          },
+        ],
+      },
+      {
+        name: "Cup Products",
+        products: [
+          {
+            slug: "kivo-4-in-1-coconut-gari-soaking-mix-cup",
+            name: "KIVO 4 IN 1 COCONUT GARI SOAKING MIX CUP",
+            image: "/assets/products/kivo/coconut-gari-soaking-mix-cup.jpeg",
+            imageAlt: "KIVO 4 IN 1 COCONUT GARI SOAKING MIX CUP",
+            description:
+              "KIVO 4 IN 1 COCONUT GARI SOAKING MIX CUP combines crispy gari, creamy creamer, toasted coconut and sugar in a convenient ready-to-enjoy cup fortified with Vitamin A, iron and zinc.",
+            sizes: "cup format",
+          },
+          {
+            slug: "kivo-4-in-1-strawberry-gari-soaking-mix-cup",
+            name: "KIVO 4 IN 1 STRAWBERRY GARI SOAKING MIX CUP",
+            image: "/assets/products/kivo/strawberry-gari-soaking-mix-cup.jpeg",
+            imageAlt: "KIVO 4 IN 1 STRAWBERRY GARI SOAKING MIX CUP",
+            description:
+              "KIVO 4 IN 1 STRAWBERRY GARI SOAKING MIX CUP blends gari, creamer, strawberry and sugar in a convenient fruity cup fortified with Vitamin A, iron and zinc.",
+            sizes: "cup format",
+          },
+        ],
+      },
+      {
+        name: "Creamers",
+        products: [
+          {
+            slug: "kivo-non-dairy-creamer",
+            name: "KIVO NON DAIRY CREAMER",
+            image: "/assets/products/kivo/non-dairy-creamer.png",
+            imageAlt: "KIVO NON DAIRY CREAMER",
+            description:
+              "KIVO NON-DAIRY CREAMER is your go to creamer to add milky creaminess and delicious taste to your Beverages, Cereals, Gari soakings and Porridge. It is available in affordable single serve sachets and larger pouch packing for your cakes, bakes and iced kenkeys.",
+            sizes: "20g & 250g",
+          },
+        ],
+      },
+      {
+        name: "Convenience Foods",
+        products: [
+          {
+            slug: "kivo-baked-beans",
+            name: "KIVO BAKED BEANS",
+            image: "/assets/products/kivo/baked-beans.png",
+            imageAlt: "KIVO BAKED BEANS",
+            description:
+              "KIVO BAKED BEANS is made from the choicest selection of North American White Navy beans and rich tomato sauce. It is a tasty and nutritious supplement for any meal of the day, be it breakfast, lunch or dinner. Use it along with your toast and eggs, toss it into your salad or add it to complement your noodles, spaghetti or rice dishes.",
+            sizes: "400g",
+          },
+          {
+            slug: "kivo-gari-with-shito",
+            name: "KIVO GARI WITH SHITO",
+            image: "/assets/products/kivo/gari-with-shito.jpeg",
+            imageAlt: "KIVO GARI WITH SHITO",
+            description:
+              "KIVO GARI WITH SHITO pairs ready-to-eat gari with rich Ghanaian shito for a convenient, satisfying local meal.",
             sizes: "125g",
           },
         ],
@@ -307,8 +412,8 @@ export function getAllProducts() {
 }
 
 export const featuredProducts: Product[] = [
+  brands[0].categories[1].products[0], // Kivo 4-in-1 Gari Soaking Mix
   brands[0].categories[0].products[0], // Kivo Hot Pepper Powder
-  brands[0].categories[1].products[1], // Kivo 4-in-1 Gari Soaking Mix
 ];
 
 export type Testimonial = {

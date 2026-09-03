@@ -37,6 +37,7 @@ export default async function ProductDetailPage({
   const found = getProduct(brandSlug, productSlug);
   if (!found) notFound();
   const { brand, product } = found;
+  const productImages = product.images ?? [product.image];
 
   return (
     <div>
@@ -45,13 +46,18 @@ export default async function ProductDetailPage({
       </header>
 
       <div className={`container ${styles.productDetails}`}>
-        <Image
-          src={product.image}
-          alt="Product Image"
-          width={500}
-          height={500}
-          className={styles.productImage}
-        />
+        <div className={styles.productGallery}>
+          {productImages.map((image, index) => (
+            <Image
+              key={image}
+              src={image}
+              alt={index === 0 ? product.imageAlt : `${product.imageAlt} pack ${index + 1}`}
+              width={500}
+              height={500}
+              className={styles.productImage}
+            />
+          ))}
+        </div>
         <div className={styles.productInfo}>
           <span className={styles.productNameLabel}>Product Name</span>
           <h2>{product.name}</h2>

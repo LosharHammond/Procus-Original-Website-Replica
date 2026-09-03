@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${poppins.variable} ${ptSerif.variable}`}>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Navbar />
         <main style={{ flex: 1 }}>{children}</main>
         <Footer />

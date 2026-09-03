@@ -35,6 +35,7 @@
 .brandLogos {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 2rem;
   flex-wrap: wrap;
 }
@@ -92,6 +93,10 @@
   .brands {
     grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .brandLogos {
+    justify-content: center;
   }
 
   .alookRow {

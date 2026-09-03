@@ -8,6 +8,11 @@ import ContactForm from "@/components/ContactForm";
 import { brands, getBrand, reachFormFields, testimonials } from "@/lib/siteData";
 import styles from "../brands.module.css";
 
+function smallestPackWeight(sizes: string) {
+  const weights = Array.from(sizes.matchAll(/(\d+(?:\.\d+)?)\s*g\b/gi), (match) => Number(match[1]));
+  return weights.length ? Math.min(...weights) : Number.POSITIVE_INFINITY;
+}
+
 export function generateStaticParams() {
   return brands.map((brand) => ({ brand: brand.slug }));
 }
@@ -38,18 +43,27 @@ export default async function BrandPage({ params }: { params: Promise<{ brand: s
       </header>
 
       <div className="container">
-        {brand.categories.map((category) => (
-          <div className={styles.productContainer} key={category.name}>
-            <h2>{category.name}</h2>
-            <ul className={styles.productGrid}>
-              {category.products.map((product) => (
+        {brand.categories.map((category) => {
+          const productsByWeight = [...category.products].sort(
+            (left, right) => smallestPackWeight(left.sizes) - smallestPackWeight(right.sizes),
+          );
+
+          return (
+            <section className={styles.productContainer} key={category.name}>
+              <div className={styles.categoryHeading}>
+                <h2>{category.name}</h2>
+                <span>{category.products.length} {category.products.length === 1 ? "product" : "products"}</span>
+              </div>
+              <ul className={styles.productGrid}>
+                {productsByWeight.map((product) => (
                 <li key={product.slug}>
                   <ProductCard brandSlug={brand.slug} product={product} />
                 </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+                ))}
+              </ul>
+            </section>
+          );
+        })}
       </div>
 
       <section className="container">
