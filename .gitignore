@@ -12,6 +12,7 @@
 # Logs and local tooling
 *.log
 *.tsbuildinfo
+*.mov
 .DS_Store
 Thumbs.db
 

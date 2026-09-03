@@ -541,4 +541,12 @@ export const heroSlides: HeroSlide[] = [
     ctaLabel: "Explore",
     ctaHref: "/brands/kivo",
   },
+  {
+    id: "kivo-gari-with-shito",
+    media: { type: "mp4", src: "/assets/hero/shito-tvc-15s.mp4" },
+    heading: "Discover Kivo Gari with Shito",
+    subheading: "A convenient taste of Ghana, ready when you are",
+    ctaLabel: "Explore",
+    ctaHref: "/brands/kivo/kivo-gari-with-shito",
+  },
 ];
