@@ -302,18 +302,39 @@ export const brands: Brand[] = [
         products: [
           {
             slug: "kivo-hot-shito",
-            name: "KIVO HOT SHITO",
+            name: "KIVO HOT SHITO 30G",
             image: "/assets/products/kivo/hot-shito-30g.png",
-            images: [
-              "/assets/products/kivo/hot-shito-30g.png",
-              "/assets/products/kivo/hot-shito-250g.png",
-              "/assets/products/kivo/hot-shito-500g.png",
-              "/assets/products/kivo/hot-shito-1kg.png",
-            ],
-            imageAlt: "KIVO HOT SHITO",
+            imageAlt: "KIVO HOT SHITO 30G pouch",
             description:
               "KIVO HOT SHITO is a rich, savoury Ghanaian pepper sauce made with quality ingredients and hygienically packed for freshness. Enjoy its bold flavour with rice, gari, yam, fried foods and your favourite everyday meals.",
-            sizes: "30g, 250g, 500g & 1kg",
+            sizes: "30g",
+          },
+          {
+            slug: "kivo-hot-shito-250g",
+            name: "KIVO HOT SHITO 250G",
+            image: "/assets/products/kivo/hot-shito-250g.png",
+            imageAlt: "KIVO HOT SHITO 250G jar",
+            description:
+              "KIVO HOT SHITO is a rich, savoury Ghanaian pepper sauce made with quality ingredients and hygienically packed for freshness. Enjoy its bold flavour with rice, gari, yam, fried foods and your favourite everyday meals.",
+            sizes: "250g",
+          },
+          {
+            slug: "kivo-hot-shito-500g",
+            name: "KIVO HOT SHITO 500G",
+            image: "/assets/products/kivo/hot-shito-500g.png",
+            imageAlt: "KIVO HOT SHITO 500G jar",
+            description:
+              "KIVO HOT SHITO is a rich, savoury Ghanaian pepper sauce made with quality ingredients and hygienically packed for freshness. Enjoy its bold flavour with rice, gari, yam, fried foods and your favourite everyday meals.",
+            sizes: "500g",
+          },
+          {
+            slug: "kivo-hot-shito-1kg",
+            name: "KIVO HOT SHITO 1KG",
+            image: "/assets/products/kivo/hot-shito-1kg.png",
+            imageAlt: "KIVO HOT SHITO 1KG jar",
+            description:
+              "KIVO HOT SHITO is a rich, savoury Ghanaian pepper sauce made with quality ingredients and hygienically packed for freshness. Enjoy its bold flavour with rice, gari, yam, fried foods and your favourite everyday meals.",
+            sizes: "1kg",
           },
         ],
       },
