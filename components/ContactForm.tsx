@@ -27,6 +27,8 @@ type ContactFormProps = {
 };
 
 const FILE_SIZE_LIMIT = 500 * 1024; // 500KB
+const FORM_ACTION = `https://formsubmit.co/${siteInfo.email}`;
+const FORM_AJAX_ENDPOINT = `https://formsubmit.co/ajax/${siteInfo.email}`;
 
 export default function ContactForm({
   id,
@@ -85,12 +87,17 @@ export default function ContactForm({
     setErrors({});
     setStatus("submitting");
     formData.set("form-name", formName);
-    formData.set("subject", subject);
+    formData.set("_subject", subject);
+    formData.set("_template", "table");
+    formData.set("_url", window.location.href);
 
     try {
-      const response = await fetch("/__forms.html", {
+      const response = await fetch(FORM_AJAX_ENDPOINT, {
         method: "POST",
         body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       });
 
       if (!response.ok) {
@@ -141,17 +148,19 @@ export default function ContactForm({
           <form
             className={styles.forms}
             name={formName}
+            action={FORM_ACTION}
             method="POST"
             encType="multipart/form-data"
             onSubmit={handleSubmit}
             noValidate
           >
             <input type="hidden" name="form-name" value={formName} />
-            <input type="hidden" name="subject" value={subject} />
+            <input type="hidden" name="_subject" value={subject} />
+            <input type="hidden" name="_template" value="table" />
             <p className={styles.honeypot} aria-hidden="true">
               <label>
                 Do not fill this out if you are human:
-                <input name="bot-field" tabIndex={-1} autoComplete="off" />
+                <input name="_honey" tabIndex={-1} autoComplete="off" />
               </label>
             </p>
             {status === "success" ? (
