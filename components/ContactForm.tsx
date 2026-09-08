@@ -27,9 +27,10 @@ type ContactFormProps = {
 };
 
 const FILE_SIZE_LIMIT = 500 * 1024; // 500KB
-const FORM_ACTION = `https://formsubmit.co/${siteInfo.email}`;
-const FORM_AJAX_ENDPOINT = `https://formsubmit.co/ajax/${siteInfo.email}`;
-const FORM_CC = "hammond@procusghana.com";
+const FORM_RECIPIENT = "hammond@procusghana.com";
+const FORM_CC = siteInfo.email;
+const FORM_ACTION = `https://formsubmit.co/${FORM_RECIPIENT}`;
+const FORM_AJAX_ENDPOINT = `https://formsubmit.co/ajax/${FORM_RECIPIENT}`;
 
 export default function ContactForm({
   id,
@@ -43,7 +44,7 @@ export default function ContactForm({
   submitLabel = "Submit",
 }: ContactFormProps) {
   const [status, setStatus] = useState<
-    "idle" | "submitting" | "success" | "error"
+    "idle" | "submitting" | "success" | "activation" | "error"
   >("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -101,8 +102,17 @@ export default function ContactForm({
           Accept: "application/json",
         },
       });
+      const result = (await response.json()) as {
+        success?: boolean | string;
+        message?: string;
+      };
+      const submissionAccepted = result.success === true || result.success === "true";
 
-      if (!response.ok) {
+      if (!response.ok || !submissionAccepted) {
+        if (result.message?.toLowerCase().includes("activation")) {
+          setStatus("activation");
+          return;
+        }
         throw new Error("The form submission was not accepted.");
       }
 
@@ -169,6 +179,12 @@ export default function ContactForm({
             {status === "success" ? (
               <div className={styles.successBox} role="status">
                 Thanks — your message has been sent.
+              </div>
+            ) : null}
+
+            {status === "activation" ? (
+              <div className={styles.successBox} role="status">
+                Please activate this form using the email sent to {FORM_RECIPIENT}, then submit your message again.
               </div>
             ) : null}
 
