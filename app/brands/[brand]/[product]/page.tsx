@@ -45,31 +45,33 @@ export default async function ProductDetailPage({
         <Image src={brand.cover} alt={`${brand.name} product range`} width={1200} height={600} />
       </header>
 
-      <div className={`container ${styles.productDetails}`}>
-        <div className={styles.productGallery}>
-          {productImages.map((image, index) => (
-            <Image
-              key={image}
-              src={image}
-              alt={index === 0 ? product.imageAlt : `${product.imageAlt} pack ${index + 1}`}
-              width={500}
-              height={500}
-              className={styles.productImage}
-            />
-          ))}
+      <section className="container">
+        <div className={styles.productDetails}>
+          <div className={styles.productGallery}>
+            {productImages.map((image, index) => (
+              <Image
+                key={image}
+                src={image}
+                alt={index === 0 ? product.imageAlt : `${product.imageAlt} pack ${index + 1}`}
+                width={500}
+                height={500}
+                className={styles.productImage}
+              />
+            ))}
+          </div>
+          <div className={styles.productInfo}>
+            <span className={styles.productNameLabel}>Product Name</span>
+            <h2>{product.name}</h2>
+            {product.description ? <p>{product.description}</p> : null}
+            <ul className={styles.specList}>
+              <li>
+                <span>Available Sizes</span>
+                {product.sizes}
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className={styles.productInfo}>
-          <span className={styles.productNameLabel}>Product Name</span>
-          <h2>{product.name}</h2>
-          {product.description ? <p>{product.description}</p> : null}
-          <ul className={styles.specList}>
-            <li>
-              <span>Available Sizes</span>
-              {product.sizes}
-            </li>
-          </ul>
-        </div>
-      </div>
+      </section>
 
       <section className="container">
         <Heading eyebrow="Join our" title="Happy customers" center />
