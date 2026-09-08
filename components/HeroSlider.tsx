@@ -12,7 +12,6 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const [hovering, setHovering] = useState(false);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(true);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
 
   const goTo = useCallback(
@@ -25,20 +24,27 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const next = useCallback(() => goTo(active + 1), [active, goTo]);
   const prev = useCallback(() => goTo(active - 1), [active, goTo]);
 
-  // Auto-advance the slideshow, unless the visitor is hovering/focused inside it or has paused playback.
+  // Non-MP4 slides use a timed fallback. MP4 slides advance precisely when playback ends.
   useEffect(() => {
     if (hovering || !playing || slides.length < 2) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) return;
+    if (slides[active]?.media.type === "mp4") return;
 
-    timerRef.current = setInterval(() => {
+    const timer = setTimeout(() => {
       setActive((current) => (current + 1) % slides.length);
     }, AUTOPLAY_MS);
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [hovering, playing, slides.length]);
+    return () => clearTimeout(timer);
+  }, [active, hovering, playing, slides]);
+
+  const handleVideoEnded = useCallback(
+    (index: number) => {
+      if (index !== active || slides.length < 2) return;
+      setActive((current) => (current + 1) % slides.length);
+    },
+    [active, slides.length]
+  );
 
   const syncVideo = useCallback(
     (index: number) => {
@@ -46,6 +52,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       if (!video) return;
       if (index !== active) {
         video.pause();
+        video.currentTime = 0;
         return;
       }
       video.muted = muted;
@@ -91,10 +98,10 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                   }}
                   className={styles.video}
                   src={slide.media.src}
-                  loop
                   playsInline
                   preload={index === 0 ? "auto" : "none"}
                   onLoadedData={() => syncVideo(index)}
+                  onEnded={() => handleVideoEnded(index)}
                 />
               ) : (
                 <div className={styles.youtubeWrap}>

@@ -51,8 +51,8 @@
 
 .lives {
   display: grid;
-  justify-items: center;
-  text-align: center;
+  justify-items: start;
+  text-align: left;
   padding: 4rem 0 2rem;
 }
 

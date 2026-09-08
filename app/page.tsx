@@ -67,7 +67,7 @@ export default function Home() {
 
       <section className="container">
         <div className={styles.lives}>
-          <Heading eyebrow="How We Touch Lives" title="Bringing cheer to households across Ghana" center />
+          <Heading eyebrow="How We Touch Lives" title="Bringing cheer to households across Ghana" />
           <p>
             Since Inception, we at Procus have remained focused on offering premium quality and affordable
             products. We have been impacting the lives of people living in Ghana and will continue to do so with
