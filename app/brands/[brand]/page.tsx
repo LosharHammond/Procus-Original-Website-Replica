@@ -39,7 +39,7 @@ export default async function BrandPage({ params }: { params: Promise<{ brand: s
   return (
     <div>
       <header className={styles.coverHeader}>
-        <Image src={brand.cover} alt="Brand Cover" width={1200} height={600} />
+        <Image src={brand.cover} alt={`${brand.name} product range`} width={1200} height={600} />
       </header>
 
       <div className="container">

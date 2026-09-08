@@ -116,10 +116,10 @@ export const brands: Brand[] = [
     slug: "kivo",
     name: "Kivo",
     logo: "/assets/brands/kivo-logo.svg",
-    cover: "/assets/brands/kivo-cover.png",
+    cover: "/assets/products/kivo/kivo_products_banner.jpeg",
     tagline: "100% natural spices, gari mixes and pantry staples",
     description:
-      "We are the official manufacturers of Kivo Hot pepper, Kivo 4-in-1 Gari Soaking Mix, Kivo Non-dairy Creamer, Kivo Ginger powder, Kivo Curry Powder. The new products on the market are Kivo 100% Natural Curry Plus, Kivo 100% Natural Ginger, Garlic and Onion Powder. Additionally, we distribute Kivo Baked Beans.",
+      "We are the official manufacturers of Kivo Hot Pepper, Kivo Hot Shito, Kivo 4-in-1 Gari Soaking Mix, Kivo Non-dairy Creamer, Kivo Ginger Powder and Kivo Curry Powder. Our growing range also includes Kivo 100% Natural Curry Plus, Kivo 100% Natural Ginger, Garlic and Onion Powder, and Kivo Baked Beans.",
     categories: [
       {
         name: "Spice Powders",
@@ -294,6 +294,26 @@ export const brands: Brand[] = [
             description:
               "KIVO 4 IN 1 STRAWBERRY GARI SOAKING MIX CUP blends gari, creamer, strawberry and sugar in a convenient fruity cup fortified with Vitamin A, iron and zinc.",
             sizes: "cup format",
+          },
+        ],
+      },
+      {
+        name: "Shito Products",
+        products: [
+          {
+            slug: "kivo-hot-shito",
+            name: "KIVO HOT SHITO",
+            image: "/assets/products/kivo/hot-shito-30g.png",
+            images: [
+              "/assets/products/kivo/hot-shito-30g.png",
+              "/assets/products/kivo/hot-shito-250g.png",
+              "/assets/products/kivo/hot-shito-500g.png",
+              "/assets/products/kivo/hot-shito-1kg.png",
+            ],
+            imageAlt: "KIVO HOT SHITO",
+            description:
+              "KIVO HOT SHITO is a rich, savoury Ghanaian pepper sauce made with quality ingredients and hygienically packed for freshness. Enjoy its bold flavour with rice, gari, yam, fried foods and your favourite everyday meals.",
+            sizes: "30g, 250g, 500g & 1kg",
           },
         ],
       },
