@@ -82,7 +82,7 @@ Drop the new file into the matching folder under `public/assets/` (see structure
 
 ### Connecting the contact / resume forms
 
-The contact and careers forms use FormSubmit's host-independent endpoint and deliver to `hammond@procusghana.com`. They validate in the browser, submit without leaving the page, include spam protection, and support PDF résumé uploads up to 500KB. FormSubmit must be activated once from the receiving mailbox; when the site moves to a new public domain, submit and confirm a test message from that domain before launch.
+The contact and careers forms use FormSubmit's host-independent endpoint. They deliver primarily to `info@procusghana.com` and copy `hammond@procusghana.com`. They validate in the browser, submit without leaving the page, include spam protection, and support PDF résumé uploads up to 500KB. FormSubmit must be activated once from the primary receiving mailbox; when the site moves to a new public domain, submit and confirm a test message from that domain before launch.
 
 ## Deployment
 
