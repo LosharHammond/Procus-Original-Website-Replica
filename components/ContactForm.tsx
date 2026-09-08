@@ -28,7 +28,6 @@ type ContactFormProps = {
 
 const FILE_SIZE_LIMIT = 500 * 1024; // 500KB
 const FORM_RECIPIENT = "hammond@procusghana.com";
-const FORM_CC = siteInfo.email;
 const FORM_ACTION = `https://formsubmit.co/${FORM_RECIPIENT}`;
 const FORM_AJAX_ENDPOINT = `https://formsubmit.co/ajax/${FORM_RECIPIENT}`;
 
@@ -90,7 +89,6 @@ export default function ContactForm({
     setStatus("submitting");
     formData.set("form-name", formName);
     formData.set("_subject", subject);
-    formData.set("_cc", FORM_CC);
     formData.set("_template", "table");
     formData.set("_url", window.location.href);
 
@@ -168,7 +166,6 @@ export default function ContactForm({
           >
             <input type="hidden" name="form-name" value={formName} />
             <input type="hidden" name="_subject" value={subject} />
-            <input type="hidden" name="_cc" value={FORM_CC} />
             <input type="hidden" name="_template" value="table" />
             <p className={styles.honeypot} aria-hidden="true">
               <label>
