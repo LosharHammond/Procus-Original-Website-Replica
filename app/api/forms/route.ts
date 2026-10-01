@@ -32,8 +32,16 @@ function escapeHtml(value: string) {
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin) {
-    return jsonError("This form request is not allowed.", 403);
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+  const requestHost = forwardedHost || request.headers.get("host") || new URL(request.url).host;
+  if (origin) {
+    try {
+      if (new URL(origin).host !== requestHost) {
+        return jsonError("This form request is not allowed.", 403);
+      }
+    } catch {
+      return jsonError("This form request is not allowed.", 403);
+    }
   }
 
   const contentLength = Number(request.headers.get("content-length") || 0);

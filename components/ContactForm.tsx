@@ -53,12 +53,14 @@ export default function ContactForm({
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const allFields = [...rows.flat(), message];
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("idle");
+    setErrorMessage("");
     const form = event.currentTarget;
     const formData = new FormData(form);
     const nextErrors: Record<string, string> = {};
@@ -122,7 +124,8 @@ export default function ContactForm({
 
       setStatus("success");
       form.reset();
-    } catch {
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Please try again later.");
       setStatus("error");
     }
   }
@@ -183,6 +186,7 @@ export default function ContactForm({
               <div className={styles.errorBox} role="alert">
                 Sorry, your message could not be sent. Please email us directly at{" "}
                 <a href={`mailto:${FORM_RECIPIENT}`}>{FORM_RECIPIENT}</a>.
+                {errorMessage ? ` (${errorMessage})` : null}
               </div>
             ) : null}
 
