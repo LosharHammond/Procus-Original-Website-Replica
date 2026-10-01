@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 const RECIPIENT = "Skthakur10@gmail.com";
-const CC_RECIPIENT = "hammond@procusghana.com";
+const CC_RECIPIENT = "losharhammond@gmail.com";
 const MAX_FILE_BYTES = 500 * 1024;
 const MAX_REQUEST_BYTES = 900 * 1024;
 

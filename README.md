@@ -82,7 +82,7 @@ Drop the new file into the matching folder under `public/assets/` (see structure
 
 ### Connecting the contact / resume forms
 
-The contact and careers forms send through a server-side Next.js route backed by Brevo Transactional Email. Submissions go to `Skthakur10@gmail.com`, with `hammond@procusghana.com` copied; replies go to the submitter. Career applications may include a PDF résumé up to 500KB. The route validates submissions and attachments, escapes form content, checks the same-origin request, and keeps the Brevo API key on the server.
+The contact and careers forms send through a server-side Next.js route backed by Brevo Transactional Email. Submissions go to `Skthakur10@gmail.com`, with `losharhammond@gmail.com` copied; replies go to the submitter. The sender is configured through `BREVO_SENDER_EMAIL` and should be `hammond@procusghana.com` once that address is verified in Brevo. Career applications may include a PDF résumé up to 500KB. The route validates submissions and attachments, escapes form content, checks the same-origin request, and keeps the Brevo API key on the server.
 
 Before running locally or deploying, create a Brevo account, verify the sending address in Brevo, and set these environment variables. Copy `.env.example` to `.env.local` for local development; in production, set them in the hosting provider's environment-variable settings and redeploy. Do not commit `.env.local` or the API key.
 
