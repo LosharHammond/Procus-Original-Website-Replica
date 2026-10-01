@@ -82,7 +82,17 @@ Drop the new file into the matching folder under `public/assets/` (see structure
 
 ### Connecting the contact / resume forms
 
-The contact and careers forms use FormSubmit's host-independent endpoint. They deliver primarily to `info@procusghana.com` and copy `hammond@procusghana.com`. They validate in the browser, submit without leaving the page, include spam protection, and support PDF résumé uploads up to 500KB. FormSubmit must be activated once from the primary receiving mailbox; when the site moves to a new public domain, submit and confirm a test message from that domain before launch.
+The contact and careers forms send through a server-side Next.js route backed by Brevo Transactional Email. Submissions go to `Skthakur10@gmail.com`, with `hammond@procusghana.com` copied; replies go to the submitter. Career applications may include a PDF résumé up to 500KB. The route validates submissions and attachments, escapes form content, checks the same-origin request, and keeps the Brevo API key on the server.
+
+Before running locally or deploying, create a Brevo account, verify the sending address in Brevo, and set these environment variables. Copy `.env.example` to `.env.local` for local development; in production, set them in the hosting provider's environment-variable settings and redeploy. Do not commit `.env.local` or the API key.
+
+```env
+BREVO_API_KEY=your_private_brevo_api_key
+BREVO_SENDER_EMAIL=your_verified_sender_address
+BREVO_SENDER_NAME=Procus Ghana Website
+```
+
+After configuration, test both the contact form and a careers submission (including a PDF) and confirm the messages arrive at the configured recipients. Form submissions will return a clear setup error until the server environment variables are present.
 
 ## Deployment
 
@@ -92,7 +102,7 @@ This is a standard Next.js app and deploys anywhere Next.js runs:
 - **Netlify** — use the official Next.js Runtime plugin.
 - **Node/VPS/cPanel (Node hosting)** — `npm run build`, then `npm start` behind a reverse proxy (or use `next start -p <port>`).
 
-There are no environment variables or email passwords required for the current build.
+The forms require the Brevo server environment variables above. Deploy to a Next.js-compatible Node/serverless host so the `/api/forms` route can run; a static-only export cannot send form email through this server route.
 
 ## Design system notes
 

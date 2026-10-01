@@ -27,10 +27,17 @@ type ContactFormProps = {
 };
 
 const FILE_SIZE_LIMIT = 500 * 1024; // 500KB
-const FORM_RECIPIENT = siteInfo.email;
-const FORM_CC = "hammond@procusghana.com";
-const FORM_ACTION = `https://formsubmit.co/${FORM_RECIPIENT}`;
-const FORM_AJAX_ENDPOINT = `https://formsubmit.co/ajax/${FORM_RECIPIENT}`;
+const FORM_RECIPIENT = "Skthakur10@gmail.com";
+
+async function fileToBase64(file: File) {
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(offset, offset + chunkSize));
+  }
+  return btoa(binary);
+}
 
 export default function ContactForm({
   id,
@@ -44,16 +51,11 @@ export default function ContactForm({
   submitLabel = "Submit",
 }: ContactFormProps) {
   const [status, setStatus] = useState<
-    "idle" | "submitting" | "success" | "activation" | "error"
+    "idle" | "submitting" | "success" | "error"
   >("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const allFields = [...rows.flat(), message];
-  const subject =
-    formName === "careers"
-      ? "New career application from the Procus website"
-      : "New enquiry from the Procus website";
-
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("idle");
@@ -88,32 +90,34 @@ export default function ContactForm({
 
     setErrors({});
     setStatus("submitting");
-    formData.set("form-name", formName);
-    formData.set("_subject", subject);
-    formData.set("_cc", FORM_CC);
-    formData.set("_template", "table");
-    formData.set("_url", window.location.href);
-
     try {
-      const response = await fetch(FORM_AJAX_ENDPOINT, {
+      const fields: Record<string, string> = {};
+      for (const [key, value] of formData.entries()) {
+        if (typeof value === "string" && key !== "_honey") fields[key] = value.trim();
+      }
+
+      const selectedFile = fileUpload ? (formData.get(fileUpload.name) as File | null) : null;
+      const attachment = selectedFile && selectedFile.size > 0
+        ? { name: selectedFile.name, content: await fileToBase64(selectedFile) }
+        : undefined;
+
+      const response = await fetch("/api/forms", {
         method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          formName,
+          fields,
+          honeypot: formData.get("_honey"),
+          attachment,
+        }),
       });
       const result = (await response.json()) as {
-        success?: boolean | string;
+        accepted?: boolean;
         message?: string;
       };
-      const submissionAccepted = result.success === true || result.success === "true";
 
-      if (!response.ok || !submissionAccepted) {
-        if (result.message?.toLowerCase().includes("activation")) {
-          setStatus("activation");
-          return;
-        }
-        throw new Error("The form submission was not accepted.");
+      if (!response.ok || !result.accepted) {
+        throw new Error(result.message || "The form submission was not accepted.");
       }
 
       setStatus("success");
@@ -160,16 +164,9 @@ export default function ContactForm({
           <form
             className={styles.forms}
             name={formName}
-            action={FORM_ACTION}
-            method="POST"
-            encType="multipart/form-data"
             onSubmit={handleSubmit}
             noValidate
           >
-            <input type="hidden" name="form-name" value={formName} />
-            <input type="hidden" name="_subject" value={subject} />
-            <input type="hidden" name="_cc" value={FORM_CC} />
-            <input type="hidden" name="_template" value="table" />
             <p className={styles.honeypot} aria-hidden="true">
               <label>
                 Do not fill this out if you are human:
@@ -182,16 +179,10 @@ export default function ContactForm({
               </div>
             ) : null}
 
-            {status === "activation" ? (
-              <div className={styles.successBox} role="status">
-                Please activate this form using the email sent to {FORM_RECIPIENT}, then submit your message again.
-              </div>
-            ) : null}
-
             {status === "error" ? (
               <div className={styles.errorBox} role="alert">
                 Sorry, your message could not be sent. Please email us directly at{" "}
-                <a href={`mailto:${siteInfo.email}`}>{siteInfo.email}</a>.
+                <a href={`mailto:${FORM_RECIPIENT}`}>{FORM_RECIPIENT}</a>.
               </div>
             ) : null}
 
