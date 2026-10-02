@@ -27,7 +27,7 @@ type ContactFormProps = {
 };
 
 const FILE_SIZE_LIMIT = 500 * 1024; // 500KB
-const FORM_RECIPIENT = "Skthakur10@gmail.com";
+const FORM_RECIPIENT = "info@procusghana.com";
 
 async function fileToBase64(file: File) {
   const bytes = new Uint8Array(await file.arrayBuffer());
