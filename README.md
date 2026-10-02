@@ -2,7 +2,7 @@
 
 A rebuild of the [procusghana.com](https://procusghana.com/) marketing site — Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4 + CSS Modules.
 
-This project was reconstructed from the live public website because the original source code was lost. It aims to match the live site's structure, content, styling, and behaviour as closely as possible. See [REBUILD_NOTES.md](./REBUILD_NOTES.md) for exactly what was recreated, what's missing, and what to verify.
+This project was reconstructed from the live public website because the source code was lost. It aims to match the live site's structure, content, styling, and behaviour as closely as possible. See [REBUILD_NOTES.md](./REBUILD_NOTES.md) for exactly what was recreated, what's missing, and what to verify.
 
 ## Project overview
 
@@ -80,9 +80,9 @@ Add an entry to the relevant brand's `categories[].products[]` array in `lib/sit
 
 Drop the new file into the matching folder under `public/assets/` (see structure there) and update the path in `lib/siteData.ts` or the relevant `page.tsx`. All images render through `next/image`, so they're resized/optimised automatically — no need to pre-resize.
 
-### Connecting the contact / resume forms
+### Connecting the contact/resume forms
 
-The contact and careers forms send through a server-side Next.js route backed by Brevo Transactional Email. Submissions go to `Skthakur10@gmail.com`, with `losharhammond@gmail.com` copied; replies go to the submitter. The sender is configured through `BREVO_SENDER_EMAIL` and should be `hammond@procusghana.com` once that address is verified in Brevo. Career applications may include a PDF résumé up to 500KB. The route validates submissions and attachments, escapes form content, checks the same-origin request, and keeps the Brevo API key on the server.
+The contact and careers forms send through a server-side Next.js route backed by Brevo Transactional Email. Submissions go to `info@procusghana.com`, with `losharhammond@gmail.com` copied; replies go to the submitter. The sender is configured through `BREVO_SENDER_EMAIL` and should be `hammond@procusghana.com` once that address is verified in Brevo. Career applications may include a PDF résumé up to 500KB. The route validates submissions and attachments, escapes form content, checks the same-origin request, and keeps the Brevo API key on the server.
 
 Before running locally or deploying, create a Brevo account, verify the sending address in Brevo, and set these environment variables. Copy `.env.example` to `.env.local` for local development; in production, set them in the hosting provider's environment-variable settings and redeploy. Do not commit `.env.local` or the API key.
 
