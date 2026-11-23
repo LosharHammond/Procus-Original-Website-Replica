@@ -16,7 +16,7 @@ export const navLinks = [
   { label: "Our Company", href: "/about" },
   { label: "Our brands", href: "/brands" },
   { label: "Careers", href: "/careers" },
-  { label: "Events", href: "/events" },
+  { label: "Events and news", href: "/events" },
 ];
 
 export const socialLinks = {
@@ -69,7 +69,7 @@ export const resumeFormFields = {
         name: "specialisation",
         label: "Area of Expertise",
         type: "text" as const,
-        placeholder: "Your functional / managerial expertise area",
+        placeholder: "Area of expertise (e.g. sales, finance)",
         required: true,
       },
     ],
@@ -264,19 +264,28 @@ export const brands: Brand[] = [
             sizes: "60g",
           },
           {
-            slug: "kivo-4-in-1-tutti-frutti-gari-soaking-mix",
-            name: "KIVO 4 IN 1 TUTTI FRUTTI GARI SOAKING MIX",
-            image: "/assets/products/kivo/tutti-frutti-gari-soaking-mix.jpg",
-            imageAlt: "KIVO 4 IN 1 TUTTI FRUTTI GARI SOAKING MIX",
+            slug: "kivo-5-in-1-gari-soaking-mix-banana",
+            name: "KIVO 5 IN 1 GARI SOAKING MIX BANANA",
+            image: "/assets/products/kivo/5-in-1-gari-soaking-mix-banana.png",
+            imageAlt: "KIVO 5 IN 1 GARI SOAKING MIX BANANA",
             description:
-              "KIVO 4 IN 1 TUTTI FRUTTI GARI SOAKING MIX combines gari, creamer, tutti frutti pieces and sugar in a colourful ready-to-enjoy mix fortified with Vitamin A, iron and zinc.",
-            sizes: "120g sachet",
+              "KIVO 5 IN 1 GARI SOAKING MIX BANANA combines gari, creamer, banana, roasted peanuts and sugar in one ready-to-enjoy mix, fortified with Vitamin A, iron and zinc.",
+            sizes: "",
           },
         ],
       },
       {
         name: "Cup Products",
         products: [
+          {
+            slug: "kivo-4-in-1-gari-soaking-mix-cup",
+            name: "KIVO 4 IN 1 GARI SOAKING MIX CUP",
+            image: "/assets/products/kivo/4-in-1-gari-soaking-mix-cup.png",
+            imageAlt: "KIVO 4 IN 1 GARI SOAKING MIX CUP",
+            description:
+              "The classic KIVO 4 IN 1 GARI SOAKING MIX of gari, creamer, roasted groundnut and sugar in a ready-to-soak cup, with a spoon inside. Fortified with Vitamin A, iron and zinc.",
+            sizes: "cup format",
+          },
           {
             slug: "kivo-4-in-1-coconut-gari-soaking-mix-cup",
             name: "KIVO 4 IN 1 COCONUT GARI SOAKING MIX CUP",
@@ -344,11 +353,26 @@ export const brands: Brand[] = [
           {
             slug: "kivo-non-dairy-creamer",
             name: "KIVO NON DAIRY CREAMER",
-            image: "/assets/products/kivo/non-dairy-creamer.png",
-            imageAlt: "KIVO NON DAIRY CREAMER",
+            image: "/assets/products/kivo/non-dairy-creamer-250g-2026.png",
+            images: ["/assets/products/kivo/non-dairy-creamer-250g-2026.png", "/assets/products/kivo/non-dairy-creamer.png"],
+            imageAlt: "KIVO NON DAIRY CREAMER 250g pouch",
             description:
               "KIVO NON-DAIRY CREAMER is your go to creamer to add milky creaminess and delicious taste to your Beverages, Cereals, Gari soakings and Porridge. It is available in affordable single serve sachets and larger pouch packing for your cakes, bakes and iced kenkeys.",
             sizes: "20g & 250g",
+          },
+        ],
+      },
+      {
+        name: "Drinks",
+        products: [
+          {
+            slug: "kivo-3-in-1-chocolate-drink",
+            name: "KIVO 3 IN 1 CHOCOLATE DRINK",
+            image: "/assets/products/kivo/chocolate-drink-3-in-1.png",
+            imageAlt: "KIVO 3 IN 1 CHOCOLATE DRINK sachet",
+            description:
+              "A rich, creamy blend of cocoa, milk and sugar, made for an indulgent chocolate experience in every sip. Just add hot water.",
+            sizes: "40g",
           },
         ],
       },
@@ -452,11 +476,6 @@ export function getAllProducts() {
   );
 }
 
-export const featuredProducts: Product[] = [
-  brands[0].categories[1].products[0], // Kivo 4-in-1 Gari Soaking Mix
-  brands[0].categories[0].products[0], // Kivo Hot Pepper Powder
-];
-
 export type Testimonial = {
   handle: string;
   quote: string;
@@ -493,7 +512,7 @@ export const ambassador = {
   image: "/assets/ambassadors/mohammed-kudus.jpg",
   blurb:
     "Kivo's partners with Mohammed Kudus to reinforce its position as a leader in the manufacturing industry in Ghana and beyond.",
-  href: "/events",
+  href: "/events/kivo-signs-mohammed-kudus-as-brand-ambassador",
 };
 
 export type EventParagraph =

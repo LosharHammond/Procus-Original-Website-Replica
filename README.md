@@ -82,17 +82,33 @@ Drop the new file into the matching folder under `public/assets/` (see structure
 
 ### Connecting the contact/resume forms
 
-The contact and careers forms send through a server-side Next.js route backed by Brevo Transactional Email. Submissions go to `info@procusghana.com`, with `losharhammond@gmail.com` copied; replies go to the submitter. The sender is configured through `BREVO_SENDER_EMAIL` and should be `hammond@procusghana.com` once that address is verified in Brevo. Career applications may include a PDF résumé up to 500KB. The route validates submissions and attachments, escapes form content, checks the same-origin request, and keeps the Brevo API key on the server.
+The contact and careers forms send through a server-side Next.js route (`app/api/forms/route.ts`). Each submission is first saved to the admin panel (`/admin`, Form submissions), then emailed from the company's own mailbox over SMTP, the same way an email app like Outlook sends mail. No third-party email or form service is used.
 
-Before running locally or deploying, create a Brevo account, verify the sending address in Brevo, and set these environment variables. Copy `.env.example` to `.env.local` for local development; in production, set them in the hosting provider's environment-variable settings and redeploy. Do not commit `.env.local` or the API key.
+Emails go to `info@procusghana.com` only, and Reply goes straight to the visitor. Career applications include the PDF résumé (up to 500KB) as an attachment. The route validates submissions and attachments, escapes form content, checks the same-origin request, and keeps the mailbox password on the server. If sending fails, the visitor still sees "sent" and the message waits in the admin panel marked "Not sent".
 
-```env
-BREVO_API_KEY=your_private_brevo_api_key
-BREVO_SENDER_EMAIL=your_verified_sender_address
-BREVO_SENDER_NAME=Procus Ghana Website
+Set these environment variables on the server (copy `.env.example` to `.env.local` for local development; never commit it):
+
+```
+SMTP_HOST=mail server of your email provider (see below)
+SMTP_PORT=465
+SMTP_USER=website@procusghana.com
+SMTP_PASS=that mailbox's password or app password
 ```
 
-After configuration, test both the contact form and a careers submission (including a PDF) and confirm the messages arrive at the configured recipients. Form submissions will return a clear setup error until the server environment variables are present.
+Optional: `MAIL_TO` (who receives the forms, comma-separated), `MAIL_CC` (copies), `MAIL_FROM_NAME` (sender name, default "Procus Ghana Website"), `SMTP_SECURE` (only for unusual ports), and `SMTP_DEBUG=1` to log the conversation with the mail server when troubleshooting.
+
+Settings for common providers (use whichever hosts the procusghana.com mailboxes):
+
+| Provider | SMTP_HOST | SMTP_PORT | Password |
+| --- | --- | --- | --- |
+| Zoho Mail (company domain) | `smtppro.zoho.com` (or `smtppro.zoho.eu` / `.in` for those regions) | 465 | Mailbox password, or an app-specific password if two-factor sign-in is on |
+| Google Workspace | `smtp.gmail.com` | 465 | An App Password (needs 2-Step Verification on the mailbox) |
+| Microsoft 365 | `smtp.office365.com` | 587 | Mailbox password, with SMTP AUTH enabled for that mailbox. Microsoft is turning password sign-in for SMTP off by default at the end of December 2026, so check with your Microsoft 365 admin first |
+| cPanel / web host email | usually `mail.procusghana.com` | 465 | Mailbox password |
+
+Use a dedicated mailbox such as `website@procusghana.com` rather than a person's own mailbox, so the password is never a staff member's.
+
+After configuration, test both the contact form and a careers submission (including a PDF) and confirm the messages arrive at the configured recipients. Until the email settings are present, submissions are still accepted and saved in the admin panel, but no email is sent.
 
 ## Deployment
 
@@ -102,7 +118,7 @@ This is a standard Next.js app and deploys anywhere Next.js runs:
 - **Netlify** — use the official Next.js Runtime plugin.
 - **Node/VPS/cPanel (Node hosting)** — `npm run build`, then `npm start` behind a reverse proxy (or use `next start -p <port>`).
 
-The forms require the Brevo server environment variables above. Deploy to a Next.js-compatible Node/serverless host so the `/api/forms` route can run; a static-only export cannot send form email through this server route.
+The forms require the SMTP environment variables above. Deploy as a normal Node.js server (`npm run build`, then `npm start`) so the `/api/forms` route and the admin panel can run; a static-only export cannot send form email or save submissions.
 
 ## Design system notes
 

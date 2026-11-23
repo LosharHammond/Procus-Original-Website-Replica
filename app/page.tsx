@@ -7,11 +7,19 @@ import FeaturedProducts from "@/components/FeaturedProducts";
 import AmbassadorCard from "@/components/AmbassadorCard";
 import Testimonials from "@/components/Testimonials";
 import ContactForm from "@/components/ContactForm";
-import { ambassador, brands, featuredProducts, heroSlides, reachFormFields, testimonials } from "@/lib/siteData";
+import { brands, heroSlides, reachFormFields, testimonials } from "@/lib/siteData";
+import { getContent, resolveFeatured } from "@/lib/content/store";
+import ambassadorStyles from "@/components/AmbassadorCard.module.css";
 import styles from "./page.module.css";
 
-export default function Home() {
+// The ambassadors are edited from the admin panel, so render on every request.
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
   const kivo = brands[0];
+  const content = await getContent();
+  const { ambassadors } = content;
+  const featured = resolveFeatured(content);
 
   return (
     <div className={styles.main}>
@@ -37,7 +45,7 @@ export default function Home() {
                 our products are approved by the Food and Drugs Authority of Ghana.
               </p>
             </div>
-            <Image src="/assets/misc/what-we-do.png" alt="What we do" width={640} height={480} />
+            <Image src="/assets/misc/what-we-do-2026.jpg" alt="The Kivo range: gari soaking mixes, hot pepper, shito, creamer, chocolate drink and baked beans" width={1600} height={1060} />
           </div>
         </div>
       </section>
@@ -54,16 +62,18 @@ export default function Home() {
           </div>
           <div className={styles.brandLogos}>
             <Link href={`/brands/${kivo.slug}`}>
-              <Image src={kivo.logo} alt="KIVO" width={130} height={80} />
+              <Image src={kivo.logo} alt="KIVO" width={166} height={85} />
             </Link>
           </div>
         </div>
       </section>
 
-      <section className={`container ${styles.featured}`}>
-        <Heading title="Featured Products" />
-        <FeaturedProducts products={featuredProducts} />
-      </section>
+      {featured.length ? (
+        <section className={`container ${styles.featured}`}>
+          <Heading eyebrow="Our Products" title="Featured Products" />
+          <FeaturedProducts items={featured} />
+        </section>
+      ) : null}
 
       <section className="container">
         <div className={styles.lives}>
@@ -79,20 +89,26 @@ export default function Home() {
 
       <section className={`container ${styles.ambassadors}`}>
         <Heading eyebrow="Our Brand" title="Ambassadors" />
-        <AmbassadorCard
-          name={ambassador.name}
-          image={ambassador.image}
-          blurb={ambassador.blurb}
-          href={ambassador.href}
-        />
+        <div className={ambassadorStyles.grid}>
+          {ambassadors.map((person, index) => (
+            <AmbassadorCard
+              key={`${index}-${person.name}`}
+              name={person.name}
+              role={person.role}
+              image={person.image}
+              blurb={person.blurb}
+              href={person.link || undefined}
+            />
+          ))}
+        </div>
       </section>
 
       <section className={styles.packaging}>
         <Image
           src="/assets/misc/our-packaging.svg"
           alt="Procus packaging"
-          width={600}
-          height={500}
+          width={717}
+          height={774}
           className={styles.packagingImage}
         />
         <div className="container">

@@ -1,67 +1,172 @@
+/*
+ * Homepage "Featured Products".
+ * Uses the site's existing patterns only: underline tabs, the "What we do" two-column
+ * layout, body text in the site's default style, the square green Button, and a white
+ * picture frame with the Kivo green gradient as its border.
+ */
+
+/* ---------- tabs ---------- */
+
 .tabs {
   display: flex;
-  align-items: center;
-  gap: 30px;
-  margin-top: 1rem;
   flex-wrap: wrap;
+  gap: 0.25rem 2.25rem;
+  margin-top: 0.5rem;
+  border-bottom: 1px solid #ddd8d2;
 }
 
 .tab {
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding-bottom: 0.5rem;
+  position: relative;
+  padding: 0.9rem 0;
   border: none;
   background: none;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s ease-in;
-  color: #afacac;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6f6f6f;
+  cursor: pointer;
+  transition: color 0.15s ease;
 }
 
-.tabActive {
-  border-bottom: 2px solid var(--color-primary-start);
+.tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.tab:hover {
   color: #000;
 }
 
+.tabActive {
+  color: #000;
+  font-weight: 600;
+}
+
+.tabActive::after {
+  transform: scaleX(1);
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--color-primary-end);
+  outline-offset: 4px;
+}
+
+/* ---------- product ---------- */
+
 .panel {
-  margin: 3rem 0;
   display: grid;
-  grid-template-columns: 0.6fr 0.4fr;
-  gap: 4rem;
+  grid-template-columns: 0.5fr 0.5fr;
+  gap: 3rem;
   align-items: center;
+  margin-top: 3rem;
 }
 
-.panel h3 {
-  margin-bottom: 1rem;
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  animation: fadeIn 0.3s ease-out;
 }
 
+.text h3 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.text p {
+  max-width: 36rem;
+}
+
+.sizes {
+  margin-bottom: 0.5rem !important;
+}
+
+.sizes span {
+  font-weight: 600;
+}
+
+/* White frame with a 2px Kivo green gradient border */
 .imageContainer {
   position: relative;
-  padding: 2rem;
   width: 100%;
-  height: 420px;
-  background: #fff;
-  border-radius: 1em;
+  height: 440px;
   border: 2px solid transparent;
-  background-clip: padding-box;
+  border-radius: 12px;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    var(--gradient-primary) border-box;
 }
 
-.imageContainer::before {
-  content: "";
+/* The picture sits inside the frame's padding, so tall packs never touch or overflow the border */
+.imageInner {
   position: absolute;
-  inset: 0;
-  z-index: -1;
-  margin: -2px;
-  border-radius: inherit;
-  background: var(--gradient-primary);
+  inset: 2rem;
+  animation: fadeIn 0.3s ease-out;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Same breakpoint as the "What we do" section */
 @media only screen and (max-width: 1200px) {
   .panel {
     grid-template-columns: 1fr;
     gap: 2rem;
+    margin-top: 2rem;
   }
 
   .imageContainer {
-    height: 320px;
+    height: 360px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  /* Tabs share the width equally and long product names wrap, so every name stays readable */
+  .tabs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .tab {
+    padding: 0.75rem 0;
+    font-size: 0.85rem;
+    line-height: 1.35;
+    text-align: left;
+  }
+
+  .imageContainer {
+    height: 300px;
+  }
+
+  .imageInner {
+    inset: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text,
+  .imageInner {
+    animation: none;
+  }
+
+  .tab::after {
+    transition: none;
   }
 }

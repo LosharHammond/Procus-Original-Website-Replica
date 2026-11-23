@@ -1,6 +1,6 @@
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
   gap: 2rem;
   margin-top: 1rem;
   margin-bottom: 4rem;
@@ -28,4 +28,29 @@
 .handleRow h3 {
   font-size: 1.5rem;
   margin: 0;
+}
+
+/* Long social media handles must wrap inside the card on small phones. */
+.handleRow h3 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.handleRow img {
+  flex: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .handleRow h3 {
+    font-size: 1.25rem;
+  }
+
+  .handleRow img {
+    width: 40px;
+    height: 40px;
+  }
 }

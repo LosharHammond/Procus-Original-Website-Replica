@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
+import { saveSubmission, updateSubmission, type StoredSubmission } from "@/lib/submissions";
+import { mailConfigured, sendFormEmail } from "@/lib/mailer";
 
 export const runtime = "nodejs";
 
-const RECIPIENT = "info@procusghana.com";
-const CC_RECIPIENT = "losharhammond@gmail.com";
 const MAX_FILE_BYTES = 500 * 1024;
 const MAX_REQUEST_BYTES = 900 * 1024;
 
@@ -28,6 +28,16 @@ function escapeHtml(value: string) {
     "'": "&#39;",
   };
   return value.replace(/[&<>"']/g, (character) => entities[character]);
+}
+
+/** The website page the form was sent from, taken from the Referer header (same site only). */
+function pageFromReferer(request: Request, host: string) {
+  try {
+    const referer = new URL(request.headers.get("referer") ?? "");
+    return referer.host === host ? referer.pathname.slice(0, 200) : "";
+  } catch {
+    return "";
+  }
 }
 
 export async function POST(request: Request) {
@@ -91,6 +101,7 @@ export async function POST(request: Request) {
   }
 
   let attachment: { name: string; content: string } | undefined;
+  let resumeBytes: Buffer | undefined;
   if (body.attachment !== undefined && body.attachment !== null) {
     if (formName !== "careers" || typeof body.attachment !== "object") {
       return jsonError("This file cannot be attached to this form.", 400);
@@ -110,11 +121,24 @@ export async function POST(request: Request) {
       return jsonError("The selected file is not a valid PDF.", 400);
     }
     attachment = { name, content: bytes.toString("base64") };
+    resumeBytes = bytes;
   }
 
-  const apiKey = process.env.BREVO_API_KEY;
-  const senderEmail = process.env.BREVO_SENDER_EMAIL;
-  if (!apiKey || !senderEmail) {
+  // Save the submission first, so it shows in the admin panel even if the email fails.
+  let saved: StoredSubmission | null = null;
+  try {
+    saved = await saveSubmission({
+      form: formName,
+      page: pageFromReferer(request, requestHost),
+      fields,
+      resume: attachment && resumeBytes ? { name: attachment.name, bytes: resumeBytes } : undefined,
+    });
+  } catch (error) {
+    console.error("Could not save form submission", error);
+  }
+
+  if (!mailConfigured()) {
+    if (saved) return NextResponse.json({ accepted: true });
     return jsonError("Email delivery is not configured yet. Please try again later.", 503);
   }
 
@@ -139,45 +163,23 @@ export async function POST(request: Request) {
   ].join("\n\n");
 
   try {
-    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "api-key": apiKey,
-        "content-type": "application/json",
+    // Sent from the company's own mailbox over SMTP (see lib/mailer.ts).
+    await sendFormEmail({
+      subject,
+      html: htmlContent,
+      text: textContent,
+      replyTo: {
+        email: fields.email,
+        name: fields.name || `${fields.first_name || ""} ${fields.last_name || ""}`.trim(),
       },
-      body: JSON.stringify({
-        sender: {
-          name: process.env.BREVO_SENDER_NAME || "Procus Ghana Website",
-          email: senderEmail,
-        },
-        to: [{ email: RECIPIENT }],
-        cc: [{ email: CC_RECIPIENT }],
-        replyTo: {
-          email: fields.email,
-          name: fields.name || `${fields.first_name || ""} ${fields.last_name || ""}`.trim(),
-        },
-        subject,
-        htmlContent,
-        textContent,
-        ...(attachment ? { attachment: [attachment] } : {}),
-      }),
-      cache: "no-store",
-      signal: AbortSignal.timeout(12_000),
+      attachment: attachment && resumeBytes ? { name: attachment.name, bytes: resumeBytes } : undefined,
     });
-
-    if (!response.ok) {
-      console.error("Brevo rejected form email with status", response.status);
-      return jsonError(
-        response.status === 429
-          ? "The email service is temporarily busy. Please try again shortly."
-          : "The email service could not accept your submission. Please try again later.",
-        response.status === 429 ? 429 : 502,
-      );
-    }
-
+    if (saved) await updateSubmission(saved.id, { emailed: true }).catch(() => {});
     return NextResponse.json({ accepted: true });
-  } catch {
-    return jsonError("The email service could not be reached. Please try again later.", 502);
+  } catch (error) {
+    console.error("Sending the form email failed:", (error as Error).message);
+    // The message is safely stored in the admin panel, so the visitor does not need to resend it.
+    if (saved) return NextResponse.json({ accepted: true });
+    return jsonError("The email could not be sent. Please try again later.", 502);
   }
 }

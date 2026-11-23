@@ -37,7 +37,9 @@
 }
 
 .opportunities {
-  padding: 3rem 0 1rem;
+  /* top and bottom only, so the page's side margins (.container) stay */
+  padding-top: 3rem;
+  padding-bottom: 1rem;
 }
 
 .quote {
@@ -48,7 +50,9 @@
 }
 
 .why {
-  padding: 4rem 0;
+  /* top and bottom only, so the page's side margins (.container) stay */
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .why > div {

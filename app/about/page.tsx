@@ -53,13 +53,13 @@ export default function AboutPage() {
               proper storage and safety of all products.
             </p>
           </div>
-          <Image src="/assets/about/company.png" alt="Procus Ghana team" width={640} height={480} />
+          <Image src="/assets/about/company-map-2026.jpg" alt="Map of Ghana showing distribution routes from Accra to Kumasi, Takoradi, Cape Coast, Koforidua, Ho, Sunyani, Techiman, Tamale, Bolgatanga, Wa, Damongo and Dambai" width={1600} height={1120} />
         </div>
       </section>
 
       <section className={`container ${styles.purpose}`}>
         <div>
-          <Image src="/assets/about/purpose.png" alt="Our purpose" width={600} height={480} />
+          <Image src="/assets/about/purpose-table-2026.jpg" alt="Illustration of a Ghanaian family table seen from above, with jollof, waakye, gari, kelewele and warm drinks on a kente runner" width={1600} height={1120} />
           <div>
             <Heading eyebrow="Our Purpose" title="Enhancing Lives Through Novel Food Solutions" />
             <p>

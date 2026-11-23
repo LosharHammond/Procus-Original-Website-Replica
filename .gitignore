@@ -19,3 +19,6 @@ Thumbs.db
 # Duplicate source copies; normalized filenames are used by the website
 /public/assets/products/kivo/4 in 1 Gari Soaking Mix Coconut CUP.jpeg
 /public/assets/products/kivo/4 in 1 Gari Soaking Mix Strawberry CUP.jpeg
+
+# Admin panel content and uploaded images (live data, never commit or overwrite)
+/storage

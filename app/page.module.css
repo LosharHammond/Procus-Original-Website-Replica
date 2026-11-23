@@ -46,7 +46,9 @@
 }
 
 .featured {
-  padding: 3rem 0;
+  /* top and bottom only, so the page's side margins (.container) stay */
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .lives {
@@ -62,7 +64,8 @@
 }
 
 .ambassadors {
-  padding: 2rem 0 4rem;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
 }
 
 .packaging {
@@ -86,7 +89,9 @@
 }
 
 .happyCustomers {
-  padding: 2rem 0 1rem;
+  /* top and bottom only, so the page's side margins (.container) stay */
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 }
 
 @media only screen and (max-width: 1200px) {

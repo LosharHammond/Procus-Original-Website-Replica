@@ -1,7 +1,9 @@
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Poppins, PT_Serif } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import HideOnAdmin from "@/components/HideOnAdmin";
 import { siteInfo } from "@/lib/siteData";
 import "./globals.css";
 
@@ -40,13 +42,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${poppins.variable} ${ptSerif.variable}`}>
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
-        <Navbar />
+        <HideOnAdmin>
+          <Navbar />
+        </HideOnAdmin>
         <main style={{ flex: 1 }}>{children}</main>
-        <Footer />
+        <HideOnAdmin>
+          <Footer />
+        </HideOnAdmin>
       </body>
     </html>
   );

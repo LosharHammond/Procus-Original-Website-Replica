@@ -5,7 +5,11 @@ import PageHeader from "@/components/PageHeader";
 import Heading from "@/components/Heading";
 import Testimonials from "@/components/Testimonials";
 import ContactForm from "@/components/ContactForm";
-import { brands, reachFormFields, testimonials } from "@/lib/siteData";
+import { reachFormFields, testimonials } from "@/lib/siteData";
+import { getContent } from "@/lib/content/store";
+import { isUploadedImage } from "@/lib/content/image";
+import AmbassadorCard from "@/components/AmbassadorCard";
+import ambassadorStyles from "@/components/AmbassadorCard.module.css";
 import styles from "./brands.module.css";
 
 export const metadata: Metadata = {
@@ -14,21 +18,20 @@ export const metadata: Metadata = {
     "We are the official manufacturers of Kivo Hot pepper, Kivo 4-in-1 Gari Soaking Mix, Kivo Non-dairy Creamer, Kivo Ginger powder and Kivo Curry Powder, and distributors of Mutlu pasta.",
 };
 
-export default function BrandsIndexPage() {
+// Content is edited from the admin panel, so render on every request.
+export const dynamic = "force-dynamic";
+
+export default async function BrandsIndexPage() {
+  const { brandsPage, brands, ambassadors } = await getContent();
+
   return (
     <div>
-      <PageHeader title="Our Brands" image="/assets/hero/brands-header-bg.png" />
+      <PageHeader title={brandsPage.title} image="/assets/hero/brands-header-bg.png" />
 
       <section className="container">
         <div className={styles.heading}>
-          <Heading title="The brands you know and love." center />
-          <p>
-            We bring great-tasting foods to markets around the world through a variety of brands that celebrate an
-            assortment of tastes and preferences. We are the official manufacturers of Kivo Hot pepper, Kivo
-            4-in-1 Gari Soaking Mix, Kivo Non-dairy Creamer, Kivo Ginger powder, Kivo Curry Powder. The new
-            products on the market are Kivo 100% Natural Curry Plus, Kivo 100% Natural Ginger, Garlic and Onion
-            Powder. Additionally, we distribute Kivo Baked Beans and Mutlu Spaghetti.
-          </p>
+          <Heading title={brandsPage.heading} center />
+          {brandsPage.intro ? <p>{brandsPage.intro}</p> : null}
         </div>
 
         <div className={styles.brandList}>
@@ -39,8 +42,9 @@ export default function BrandsIndexPage() {
                   src={brand.cover}
                   alt={`${brand.name} Products`}
                   width={1200}
-                  height={340}
+                  height={600}
                   className={styles.cover}
+                  unoptimized={isUploadedImage(brand.cover)}
                 />
                 <div className={styles.brandCardFooter}>
                   <p className={styles.readMore}>
@@ -52,7 +56,7 @@ export default function BrandsIndexPage() {
                       />
                     </svg>
                   </p>
-                  <Image src={brand.logo} alt={brand.name} width={110} height={44} className={styles.mark} />
+                  <Image src={brand.logo} alt={brand.name} width={176} height={88} className={styles.mark} unoptimized={isUploadedImage(brand.logo)} />
                 </div>
               </Link>
             </div>
@@ -60,6 +64,18 @@ export default function BrandsIndexPage() {
         </div>
 
         <Heading eyebrow="Our Brand" title="Ambassadors" />
+        <div className={ambassadorStyles.grid} style={{ paddingBottom: "3rem" }}>
+          {ambassadors.map((person, index) => (
+            <AmbassadorCard
+              key={`${index}-${person.name}`}
+              name={person.name}
+              role={person.role}
+              image={person.image}
+              blurb={person.blurb}
+              href={person.link || undefined}
+            />
+          ))}
+        </div>
       </section>
 
       <section className="container">

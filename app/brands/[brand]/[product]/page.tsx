@@ -4,15 +4,13 @@ import Image from "next/image";
 import Heading from "@/components/Heading";
 import Testimonials from "@/components/Testimonials";
 import ContactForm from "@/components/ContactForm";
-import { getAllProducts, getProduct, reachFormFields, testimonials } from "@/lib/siteData";
+import { reachFormFields, testimonials } from "@/lib/siteData";
+import { getProductContent } from "@/lib/content/store";
+import { isUploadedImage } from "@/lib/content/image";
 import styles from "../../brands.module.css";
 
-export function generateStaticParams() {
-  return getAllProducts().map(({ brand, product }) => ({
-    brand: brand.slug,
-    product: product.slug,
-  }));
-}
+// Content is edited from the admin panel, so render on every request.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -20,11 +18,13 @@ export async function generateMetadata({
   params: Promise<{ brand: string; product: string }>;
 }): Promise<Metadata> {
   const { brand: brandSlug, product: productSlug } = await params;
-  const found = getProduct(brandSlug, productSlug);
+  const found = await getProductContent(brandSlug, productSlug);
   if (!found) return {};
   return {
     title: found.product.name,
-    description: found.product.description ?? `${found.product.name} from ${found.brand.name}, available in ${found.product.sizes}.`,
+    description:
+      found.product.description ||
+      `${found.product.name} from ${found.brand.name}${found.product.sizes ? `, available in ${found.product.sizes}` : ""}.`,
   };
 }
 
@@ -34,15 +34,15 @@ export default async function ProductDetailPage({
   params: Promise<{ brand: string; product: string }>;
 }) {
   const { brand: brandSlug, product: productSlug } = await params;
-  const found = getProduct(brandSlug, productSlug);
+  const found = await getProductContent(brandSlug, productSlug);
   if (!found) notFound();
   const { brand, product } = found;
-  const productImages = product.images ?? [product.image];
+  const productImages = product.images?.length ? product.images : [product.image];
 
   return (
     <div>
       <header className={styles.coverHeader}>
-        <Image src={brand.cover} alt={`${brand.name} product range`} width={1200} height={600} />
+        <Image src={brand.cover} alt={`${brand.name} product range`} width={1200} height={600} loading="eager" fetchPriority="high" unoptimized={isUploadedImage(brand.cover)} />
       </header>
 
       <section className="container">
@@ -56,6 +56,7 @@ export default async function ProductDetailPage({
                 width={500}
                 height={500}
                 className={styles.productImage}
+                unoptimized={isUploadedImage(image)}
               />
             ))}
           </div>
@@ -63,12 +64,14 @@ export default async function ProductDetailPage({
             <span className={styles.productNameLabel}>Product Name</span>
             <h2>{product.name}</h2>
             {product.description ? <p>{product.description}</p> : null}
-            <ul className={styles.specList}>
-              <li>
-                <span>Available Sizes</span>
-                {product.sizes}
-              </li>
-            </ul>
+            {product.sizes ? (
+              <ul className={styles.specList}>
+                <li>
+                  <span>Available Sizes</span>
+                  {product.sizes}
+                </li>
+              </ul>
+            ) : null}
           </div>
         </div>
       </section>

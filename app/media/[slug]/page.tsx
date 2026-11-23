@@ -38,7 +38,7 @@ export default async function AdvertPage({ params }: { params: Promise<{ slug: s
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${ad.youtubeId}`}
               title={ad.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
           ) : null}

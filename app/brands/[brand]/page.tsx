@@ -5,17 +5,13 @@ import Heading from "@/components/Heading";
 import ProductCard from "@/components/ProductCard";
 import Testimonials from "@/components/Testimonials";
 import ContactForm from "@/components/ContactForm";
-import { brands, getBrand, reachFormFields, testimonials } from "@/lib/siteData";
+import { reachFormFields, testimonials } from "@/lib/siteData";
+import { getBrandContent } from "@/lib/content/store";
+import { isUploadedImage } from "@/lib/content/image";
 import styles from "../brands.module.css";
 
-function smallestPackWeight(sizes: string) {
-  const weights = Array.from(sizes.matchAll(/(\d+(?:\.\d+)?)\s*g\b/gi), (match) => Number(match[1]));
-  return weights.length ? Math.min(...weights) : Number.POSITIVE_INFINITY;
-}
-
-export function generateStaticParams() {
-  return brands.map((brand) => ({ brand: brand.slug }));
-}
+// Content is edited from the admin panel, so render on every request.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -23,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ brand: string }>;
 }): Promise<Metadata> {
   const { brand: brandSlug } = await params;
-  const brand = getBrand(brandSlug);
+  const brand = await getBrandContent(brandSlug);
   if (!brand) return {};
   return {
     title: brand.name,
@@ -33,21 +29,18 @@ export async function generateMetadata({
 
 export default async function BrandPage({ params }: { params: Promise<{ brand: string }> }) {
   const { brand: brandSlug } = await params;
-  const brand = getBrand(brandSlug);
+  const brand = await getBrandContent(brandSlug);
   if (!brand) notFound();
 
   return (
     <div>
       <header className={styles.coverHeader}>
-        <Image src={brand.cover} alt={`${brand.name} product range`} width={1200} height={600} />
+        <Image src={brand.cover} alt={`${brand.name} product range`} width={1200} height={600} loading="eager" fetchPriority="high" unoptimized={isUploadedImage(brand.cover)} />
       </header>
 
       <div className="container">
         {brand.categories.map((category) => {
-          const productsByWeight = [...category.products].sort(
-            (left, right) => smallestPackWeight(left.sizes) - smallestPackWeight(right.sizes),
-          );
-
+          // Products are shown in the order set in the admin panel.
           return (
             <section className={styles.productContainer} key={category.name}>
               <div className={styles.categoryHeading}>
@@ -55,7 +48,7 @@ export default async function BrandPage({ params }: { params: Promise<{ brand: s
                 <span>{category.products.length} {category.products.length === 1 ? "product" : "products"}</span>
               </div>
               <ul className={styles.productGrid}>
-                {productsByWeight.map((product) => (
+                {category.products.map((product) => (
                 <li key={product.slug}>
                   <ProductCard brandSlug={brand.slug} product={product} />
                 </li>

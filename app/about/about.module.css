@@ -3,7 +3,9 @@
 }
 
 .company {
-  padding: 4rem 0;
+  /* top and bottom only, so the page's side margins (.container) stay */
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 .company > div {
@@ -24,7 +26,9 @@
 }
 
 .purpose {
-  padding: 2rem 0 4rem;
+  /* top and bottom only, so the page's side margins (.container) stay */
+  padding-top: 2rem;
+  padding-bottom: 4rem;
 }
 
 .purpose > div {
@@ -42,7 +46,9 @@
 }
 
 .values {
-  padding: 2rem 0 4rem;
+  /* top and bottom only, so the page's side margins (.container) stay */
+  padding-top: 2rem;
+  padding-bottom: 4rem;
 }
 
 .valuesList {
@@ -51,7 +57,9 @@
 }
 
 .culture {
-  padding: 2rem 0 5rem;
+  /* top and bottom only, so the page's side margins (.container) stay */
+  padding-top: 2rem;
+  padding-bottom: 5rem;
 }
 
 .cultureDiv {

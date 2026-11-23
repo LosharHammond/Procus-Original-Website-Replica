@@ -1,55 +1,66 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Image from "next/image";
 import PageHeader from "@/components/PageHeader";
-import Heading from "@/components/Heading";
-import { eventPost } from "@/lib/siteData";
+import { getContent } from "@/lib/content/store";
+import { isUploadedImage } from "@/lib/content/image";
+import { formatPostDate } from "@/lib/content/format";
 import styles from "./events.module.css";
 
-export const metadata: Metadata = {
-  title: "Events",
-  description: eventPost.title,
-};
+// Content is edited from the admin panel, so render on every request.
+export const dynamic = "force-dynamic";
 
-export default function EventsPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const { eventsPage } = await getContent();
+  return {
+    title: eventsPage.title,
+    description: eventsPage.intro || "Events, press releases and news from Procus Ghana Limited and Kivo.",
+  };
+}
+
+export default async function EventsPage() {
+  const { eventsPage, posts } = await getContent();
+  const published = posts.filter((post) => post.published);
+
   return (
     <div>
-      <PageHeader title="Events" image="/assets/hero/events-header-bg.png" />
+      <PageHeader title={eventsPage.title} image="/assets/hero/events-header-bg.png" />
 
       <section className={styles.sectionPad}>
         <div className="container">
-          <Heading eyebrow={eventPost.eyebrow} title={eventPost.title} />
+          {eventsPage.intro ? <p className={styles.intro}>{eventsPage.intro}</p> : null}
 
-          <Image
-            src={eventPost.image}
-            alt="Mohammed Kudus signs as Kivo brand ambassador"
-            width={1200}
-            height={700}
-            className={styles.image}
-          />
-
-          <div className={styles.description}>
-            {eventPost.paragraphs.map((paragraph, i) => {
-              if (paragraph.type === "text") {
-                return <p key={i}>{paragraph.text}</p>;
-              }
-              if (paragraph.type === "quote") {
-                return (
-                  <p key={i}>
-                    {paragraph.before}
-                    <span className={styles.quote}>&ldquo;{paragraph.quote}&rdquo;</span>
-                    {paragraph.after}
-                  </p>
-                );
-              }
-              return (
-                <p key={i}>
-                  {paragraph.before}
-                  <span className="gradientText">{paragraph.highlight}</span>
-                  {paragraph.after}
-                </p>
-              );
-            })}
-          </div>
+          {published.length === 0 ? (
+            <p className={styles.empty}>There are no events or news yet. Please check back soon.</p>
+          ) : (
+            <ul className={styles.postGrid}>
+              {published.map((post) => (
+                <li key={post.slug}>
+                  <Link href={`/events/${post.slug}`} className={styles.postCard}>
+                    <div className={styles.postImage}>
+                      <Image
+                        src={post.image}
+                        alt={post.imageAlt || post.title}
+                        fill
+                        sizes="(max-width: 700px) 100vw, 420px"
+                        style={{ objectFit: "cover" }}
+                        unoptimized={isUploadedImage(post.image)}
+                      />
+                    </div>
+                    <div className={styles.postText}>
+                      <p className={styles.postMeta}>
+                        {post.label ? <span>{post.label}</span> : null}
+                        {post.date ? <time dateTime={post.date}>{formatPostDate(post.date)}</time> : null}
+                      </p>
+                      <h2>{post.title}</h2>
+                      {post.summary ? <p>{post.summary}</p> : null}
+                      <span className={styles.readMore}>Read more →</span>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
     </div>
