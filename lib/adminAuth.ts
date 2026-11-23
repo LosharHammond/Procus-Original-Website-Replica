@@ -1,7 +1,7 @@
 // Admin login for /admin.
 //
 // Which password is used, first match wins:
-//   1. a password changed from the admin panel or with a reset link (stored in the storage folder)
+//   1. a password changed from the admin panel or with a reset link (kept in the admin storage)
 //   2. ADMIN_PASSWORD set on the server
 //   3. the built-in password below, stored as a scrypt fingerprint (hash), not as plain text:
 //      the site can check a typed password against it, but the password can't be read back from it.
@@ -9,10 +9,8 @@
 // A signed, http-only cookie keeps the admin logged in for SESSION_DAYS.
 
 import crypto from "crypto";
-import fs from "fs";
-import path from "path";
 import { cookies } from "next/headers";
-import { contentDir } from "@/lib/content/store";
+import { storage } from "@/lib/storage";
 import { storedPasswordHash } from "@/lib/adminAccount";
 
 export const ADMIN_COOKIE = "procus_admin";
@@ -25,21 +23,21 @@ export const MIN_PASSWORD_LENGTH = 8;
 
 type ActivePassword = { kind: "hash"; hash: string; source: "changed" | "built-in" } | { kind: "plain"; value: string };
 
-function activePassword(): ActivePassword {
-  const changed = storedPasswordHash();
+async function activePassword(): Promise<ActivePassword> {
+  const changed = await storedPasswordHash();
   if (changed) return { kind: "hash", hash: changed, source: "changed" };
   if (process.env.ADMIN_PASSWORD) return { kind: "plain", value: process.env.ADMIN_PASSWORD };
   return { kind: "hash", hash: ADMIN_PASSWORD_HASH, source: "built-in" };
 }
 
 /** Where the current password comes from, for the admin panel. */
-export function passwordSource() {
-  const active = activePassword();
+export async function passwordSource() {
+  const active = await activePassword();
   return active.kind === "plain" ? "server" : active.source;
 }
 
-export function adminConfigured() {
-  const active = activePassword();
+export async function adminConfigured() {
+  const active = await activePassword();
   // A password set on the server must be at least 8 characters.
   return active.kind === "plain" ? active.value.length >= MIN_PASSWORD_LENGTH : Boolean(active.hash);
 }
@@ -67,9 +65,9 @@ function matchesHash(password: string, fingerprint: string) {
   return safeEqual(given, expected);
 }
 
-export function checkPassword(password: unknown) {
-  if (!adminConfigured() || typeof password !== "string" || password.length > 200) return false;
-  const active = activePassword();
+export async function checkPassword(password: unknown) {
+  if (!(await adminConfigured()) || typeof password !== "string" || password.length > 200) return false;
+  const active = await activePassword();
   if (active.kind === "plain") {
     // Compare hashes so the comparison takes the same time whatever the length.
     const given = crypto.createHash("sha256").update(password).digest();
@@ -85,40 +83,44 @@ let cachedSecret: string | null = null;
 
 /**
  * Key used to sign login cookies. It must stay private, so it is NOT in the code:
- * it comes from ADMIN_SESSION_SECRET, or is generated once and kept in the storage folder.
+ * it comes from ADMIN_SESSION_SECRET, or is generated once and kept in the admin storage.
  * Changing the password also logs everyone out, because the password fingerprint is part of the key.
  */
-function secret() {
-  const active = activePassword();
+const SECRET_KEY = "admin-session-secret.txt";
+
+async function secret() {
+  const active = await activePassword();
   const password = active.kind === "plain" ? active.value : active.hash;
   if (process.env.ADMIN_SESSION_SECRET) return `${process.env.ADMIN_SESSION_SECRET}:${password}`;
   if (!cachedSecret) {
-    const file = path.join(contentDir(), ".admin-session-secret");
-    try {
-      cachedSecret = fs.readFileSync(file, "utf8").trim();
-    } catch {
-      cachedSecret = crypto.randomBytes(32).toString("hex");
-      fs.mkdirSync(contentDir(), { recursive: true });
-      fs.writeFileSync(file, cachedSecret, { mode: 0o600 });
+    const store = storage();
+    const saved = (await store.get(SECRET_KEY))?.toString("utf8").trim();
+    if (saved) {
+      cachedSecret = saved;
+    } else {
+      const created = crypto.randomBytes(32).toString("hex");
+      await store.set(SECRET_KEY, created);
+      // Read it back, in case another server instance created one at the same moment.
+      cachedSecret = (await store.get(SECRET_KEY))?.toString("utf8").trim() || created;
     }
   }
   return `${cachedSecret}:${password}`;
 }
 
-function sign(value: string) {
-  return crypto.createHmac("sha256", secret()).update(value).digest("hex");
+async function sign(value: string) {
+  return crypto.createHmac("sha256", await secret()).update(value).digest("hex");
 }
 
-export function createSessionToken() {
+export async function createSessionToken() {
   const expires = Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000;
-  return { token: `${expires}.${sign(`admin:${expires}`)}`, maxAge: SESSION_DAYS * 24 * 60 * 60 };
+  return { token: `${expires}.${await sign(`admin:${expires}`)}`, maxAge: SESSION_DAYS * 24 * 60 * 60 };
 }
 
-export function verifySessionToken(token: string | undefined) {
-  if (!adminConfigured() || !token) return false;
+export async function verifySessionToken(token: string | undefined) {
+  if (!token || !(await adminConfigured())) return false;
   const [expires, signature] = token.split(".");
   if (!expires || !signature || Number(expires) < Date.now()) return false;
-  return safeEqual(Buffer.from(signature), Buffer.from(sign(`admin:${expires}`)));
+  return safeEqual(Buffer.from(signature), Buffer.from(await sign(`admin:${expires}`)));
 }
 
 export async function isAdmin() {

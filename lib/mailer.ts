@@ -13,6 +13,7 @@
 //   SMTP_DEBUG     optional, set to 1 to log the conversation with the mail server when troubleshooting
 
 import type { Transporter } from "nodemailer";
+import { storage } from "@/lib/storage";
 
 const DEFAULT_TO = "info@procusghana.com";
 const DEFAULT_CC = "";
@@ -108,5 +109,7 @@ export async function sendEmail(message: { to: string | string[]; subject: strin
 export function siteUrl(request: Request) {
   if (process.env.SITE_URL) return process.env.SITE_URL.replace(/\/+$/, "");
   if (process.env.NODE_ENV !== "production") return new URL(request.url).origin;
+  // On Netlify, URL is the site's main address (its custom domain once one is connected).
+  if (storage().kind === "netlify" && process.env.URL?.startsWith("https://")) return process.env.URL.replace(/\/+$/, "");
   return "https://procusghana.com";
 }

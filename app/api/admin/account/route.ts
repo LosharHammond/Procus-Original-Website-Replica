@@ -12,18 +12,18 @@ import { mailConfigured } from "@/lib/mailer";
 
 export const dynamic = "force-dynamic";
 
-function state() {
+async function state() {
   return {
-    recoveryEmails: getRecoveryEmails(),
+    recoveryEmails: await getRecoveryEmails(),
     emailReady: mailConfigured(),
-    passwordSource: passwordSource(),
-    passwordChangedAt: passwordChangedAt() ?? null,
+    passwordSource: await passwordSource(),
+    passwordChangedAt: (await passwordChangedAt()) ?? null,
   };
 }
 
 export async function GET() {
   if (!(await isAdmin())) return NextResponse.json({ error: "Please log in again." }, { status: 401 });
-  return NextResponse.json(state(), { headers: { "Cache-Control": "no-store" } });
+  return NextResponse.json(await state(), { headers: { "Cache-Control": "no-store" } });
 }
 
 /** Replace the recovery email list. At least one address is required. */
@@ -41,6 +41,6 @@ export async function PUT(request: Request) {
   if (emails.length > MAX_RECOVERY_EMAILS)
     return NextResponse.json({ error: `You can have up to ${MAX_RECOVERY_EMAILS} recovery emails.` }, { status: 400 });
 
-  setRecoveryEmails(emails);
-  return NextResponse.json(state());
+  await setRecoveryEmails(emails);
+  return NextResponse.json(await state());
 }

@@ -17,7 +17,7 @@ const FAIL_DELAY_MS = 1500;
 
 export async function POST(request: Request) {
   if (!sameOrigin(request)) return NextResponse.json({ error: "Bad request." }, { status: 403 });
-  if (!adminConfigured()) {
+  if (!(await adminConfigured())) {
     return NextResponse.json(
       { error: "The admin password set on the server is too short. It must be at least 8 characters." },
       { status: 503 },
@@ -34,14 +34,14 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json().catch(() => ({}));
-  if (!checkPassword(body?.password)) {
+  if (!(await checkPassword(body?.password))) {
     recordFailure(key);
     await new Promise((resolve) => setTimeout(resolve, FAIL_DELAY_MS));
     return NextResponse.json({ error: "Wrong password." }, { status: 401 });
   }
 
   clearFailures(key);
-  const { token, maxAge } = createSessionToken();
+  const { token, maxAge } = await createSessionToken();
   const response = NextResponse.json({ ok: true });
   response.cookies.set(ADMIN_COOKIE, token, {
     httpOnly: true,

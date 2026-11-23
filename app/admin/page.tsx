@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminPage() {
-  if (!adminConfigured()) {
+  if (!(await adminConfigured())) {
     return (
       <div className={styles.centerScreen}>
         <div className={styles.loginCard}>

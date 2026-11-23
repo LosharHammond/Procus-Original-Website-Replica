@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   if (!(await isAdmin())) return NextResponse.json({ error: "Please log in again." }, { status: 401 });
 
   const body = await request.json().catch(() => ({}));
-  if (!checkPassword(body?.current)) {
+  if (!(await checkPassword(body?.current))) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return NextResponse.json({ error: "The current password is wrong." }, { status: 400 });
   }
@@ -27,10 +27,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: `Use at least ${MIN_PASSWORD_LENGTH} characters for the new password.` }, { status: 400 });
   }
 
-  setPasswordHash(hashPassword(next));
+  await setPasswordHash(hashPassword(next));
   alertPasswordChanged("changed from the admin panel", siteUrl(request));
 
-  const { token, maxAge } = createSessionToken();
+  const { token, maxAge } = await createSessionToken();
   const response = NextResponse.json({ ok: true });
   response.cookies.set(ADMIN_COOKIE, token, {
     httpOnly: true,
